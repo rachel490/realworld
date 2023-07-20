@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { Source_Sans_3, Source_Serif_4, Merriweather_Sans, Titillium_Web } from "next/font/google";
-import Footer from "@/components/Footer/Footer";
-import Header from "@/components/Header/Header";
+import Footer from "@/components/Layout/Footer/Footer";
+import Header from "@/components/Layout/Header/Header";
 import "./globals.css";
 
 const sourceSans3 = Source_Sans_3({
