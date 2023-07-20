@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ILoginBody } from "@/types/api";
+import { login } from "@/api/domain/auth";
 
 export interface IInput {
   type: string;
@@ -28,7 +30,9 @@ const initialValue = {
 };
 
 function LoginForm() {
+  const router = useRouter();
   const [loginData, setLoginData] = useState<ILoginBody>(initialValue);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
     const { value } = e.target;
@@ -38,14 +42,18 @@ function LoginForm() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(loginData);
+    login(loginData)
+      .then(() => router.push("/"))
+      .catch((err: Error) => setErrorMessage(err.message));
   };
 
   return (
     <>
-      <ul className="error-messages">
-        <li>errorMessage</li>
-      </ul>
+      {errorMessage && (
+        <ul className="error-messages">
+          <li>{errorMessage}</li>
+        </ul>
+      )}
 
       <form onSubmit={handleSubmit}>
         {loginInputs.map(input => (
