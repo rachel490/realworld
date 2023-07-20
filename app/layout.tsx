@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { Source_Sans_3, Source_Serif_4, Merriweather_Sans, Titillium_Web } from "next/font/google";
 import Footer from "@/components/Footer/Footer";
+import Header from "@/components/Header/Header";
 import "./globals.css";
 
 const sourceSans3 = Source_Sans_3({
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${sourceSans3.variable} ${sourceSerif4.variable} ${merriweatherSans.variable} ${titilliumWeb.variable}`}
     >
       <body>
+        <Header />
         <main>{children}</main>
         <Footer />
       </body>
