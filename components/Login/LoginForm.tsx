@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ILoginBody } from "@/types/api";
-import useLogin from "@/hooks/useLogin";
+import useAuth from "@/hooks/useAuth";
 
 export interface IInput {
   type: string;
@@ -30,7 +30,7 @@ const initialValue = {
 
 function LoginForm() {
   const [loginData, setLoginData] = useState<ILoginBody>(initialValue);
-  const { login, errorMessage } = useLogin();
+  const { login, errorMessage } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
     const { value } = e.target;

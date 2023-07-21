@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import useSignup from "@/hooks/useSignup";
 import { IRegisterBody } from "@/types/api";
+import useAuth from "@/hooks/useAuth";
 
 const registerInputs = [
   {
@@ -30,7 +30,7 @@ const initialData = {
 
 function RegisterForm() {
   const [registerData, setRegisterData] = useState<IRegisterBody>(initialData);
-  const { signup, errorMessage } = useSignup();
+  const { signup, errorMessage } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
     setRegisterData(prev => ({ ...prev, [name]: e.target.value }));
