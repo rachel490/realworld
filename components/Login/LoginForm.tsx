@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { ILoginBody } from "@/types/api";
-import { login } from "@/api/domain/auth";
+import useLogin from "@/hooks/useLogin";
 
 export interface IInput {
   type: string;
@@ -30,9 +29,8 @@ const initialValue = {
 };
 
 function LoginForm() {
-  const router = useRouter();
   const [loginData, setLoginData] = useState<ILoginBody>(initialValue);
-  const [errorMessage, setErrorMessage] = useState("");
+  const { login, errorMessage } = useLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
     const { value } = e.target;
@@ -42,9 +40,7 @@ function LoginForm() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    login(loginData)
-      .then(() => router.push("/"))
-      .catch((err: Error) => setErrorMessage(err.message));
+    login(loginData);
   };
 
   return (
