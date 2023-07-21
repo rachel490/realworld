@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IArticle } from "@/types/api";
 import { parseDate } from "@/utils/date";
+import TagList from "../Tag/TagList";
 
 interface IProps {
   articleData: IArticle;
@@ -15,6 +16,7 @@ function ArticleCard({ articleData }: IProps) {
     author: { username, image },
     createdAt,
     slug,
+    tagList,
   } = articleData;
 
   return (
@@ -39,6 +41,7 @@ function ArticleCard({ articleData }: IProps) {
         <p>{description}</p>
         <span>Read more...</span>
       </Link>
+      <TagList tags={tagList} type="outline" />
     </div>
   );
 }

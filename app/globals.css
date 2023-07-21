@@ -4,3 +4,18 @@
 .navbar-brand {
   font-weight: 700;
 }
+
+.article-preview {
+  position: relative;
+}
+
+.article-preview .tag-list {
+  position: absolute;
+  bottom: 24px;
+  right: 0;
+}
+
+.tag-default.tag-outline:hover {
+  background: #bfc7cd !important;
+  color: white !important;
+}
