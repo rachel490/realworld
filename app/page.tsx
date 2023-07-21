@@ -2,13 +2,17 @@
 import { realWorldApi } from "@/api/axios";
 import { API_URI } from "@/api/apiURI";
 import { IFeedResponse } from "@/types/api";
+import { getServerComponentPathname } from "@/utils/serverActions";
 import Banner from "@/components/Banner/Banner";
 import FeedNavbar from "@/components/FeedNavbar/FeedNavbar";
+import Pagination from "@/components/Pagination/Pagination";
 import TagSide from "@/components/Tag/TagSide";
 import ArticleCard from "@/components/Article/ArticleCard";
 
-async function getData(tagName?: string) {
-  const res = await realWorldApi.get<IFeedResponse>(API_URI.article.get.GLOBAL_FEED(tagName));
+async function getData(tagName?: string, pageNumber?: number) {
+  const res = await realWorldApi.get<IFeedResponse>(
+    API_URI.article.get.GLOBAL_FEED(tagName, pageNumber),
+  );
 
   return res.data;
 }
@@ -16,12 +20,16 @@ async function getData(tagName?: string) {
 export interface IMainPageProps {
   searchParams: {
     tagName: string;
-    feed: "tag";
+    feed: "tag" | "my";
+    page: number;
   };
 }
 
+const LIMIT = 10;
+
 export default async function Home({ searchParams }: IMainPageProps) {
-  const { articles } = await getData(searchParams.tagName);
+  const { articles, articlesCount } = await getData(searchParams.tagName, searchParams.page);
+  const totalPages = Math.ceil(articlesCount / LIMIT);
 
   // NOTE: generate feedList
   const feedList = ["Global Feed"];
@@ -31,8 +39,8 @@ export default async function Home({ searchParams }: IMainPageProps) {
 
   const getCurrentFeed = () => {
     const { tagName, feed } = searchParams;
-    console.log("tagname", tagName, feed);
     if (feed === "tag" && tagName.length) return tagName;
+    if (feed === "my") return "Your Feed";
     return "Global Feed";
   };
 
@@ -46,6 +54,11 @@ export default async function Home({ searchParams }: IMainPageProps) {
             {articles.map(article => (
               <ArticleCard key={article.slug} articleData={article} />
             ))}
+            <Pagination
+              totalPages={totalPages}
+              searchParams={searchParams}
+              currentURL={getServerComponentPathname()}
+            />
           </div>
           <TagSide />
         </div>
