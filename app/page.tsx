@@ -7,7 +7,7 @@ import Banner from "@/components/Banner/Banner";
 import FeedNavbar from "@/components/FeedNavbar/FeedNavbar";
 import Pagination from "@/components/Pagination/Pagination";
 import TagSide from "@/components/Tag/TagSide";
-import ArticleCard from "@/components/Article/ArticleCard";
+import ArticleList from "@/components/Article/ArticleList";
 
 async function getData(tagName?: string, pageNumber?: number) {
   const res = await realWorldApi.get<IFeedResponse>(
@@ -51,9 +51,7 @@ export default async function Home({ searchParams }: IMainPageProps) {
         <div className="row">
           <div className="col-md-9">
             <FeedNavbar feedList={feedList} currentFeed={getCurrentFeed()} />
-            {articles.map(article => (
-              <ArticleCard key={article.slug} articleData={article} />
-            ))}
+            <ArticleList articlesData={articles} />
             <Pagination
               totalPages={totalPages}
               searchParams={searchParams}
