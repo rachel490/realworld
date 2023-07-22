@@ -5,19 +5,19 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { realWorldApi } from "@/api/axios";
 import { API_URI } from "@/api/apiURI";
-import { ILoginBody, IAuthError, IRegisterBody, IUserResponse } from "@/types/api";
+import { ILoginBody, IAuthError, IRegisterBody, IUserResponse } from "@/types";
 
 function useAuth() {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
-  const generatePayloadData = (data: IRegisterBody | ILoginBody) => {
+  const generatePayloadData = (data: IRegisterBody["user"] | ILoginBody["user"]) => {
     return {
       user: data,
     };
   };
 
-  const signup = async (registerData: IRegisterBody) => {
+  const signup = async (registerData: IRegisterBody["user"]) => {
     try {
       const response = await realWorldApi.post<IUserResponse>(
         API_URI.auth.post.SIGN_UP,
@@ -31,7 +31,7 @@ function useAuth() {
     }
   };
 
-  const login = async (loginData: ILoginBody) => {
+  const login = async (loginData: ILoginBody["user"]) => {
     try {
       const response = await realWorldApi.post<IUserResponse>(
         API_URI.auth.post.LOGIN,
