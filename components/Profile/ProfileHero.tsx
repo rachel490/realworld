@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { realWorldApi } from "@/api/axios";
 import { API_URI } from "@/api/apiURI";
-import { IProfileResponse } from "@/types/api";
+import { IProfileResponse } from "@/types";
 
 const fetchUserData = async (username: string) => {
   const res = await realWorldApi.get<IProfileResponse>(API_URI.profile.get.USER_PROFILE(username));

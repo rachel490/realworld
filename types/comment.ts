@@ -1,4 +1,4 @@
-import { IAuthor } from "./api";
+import { IAuthor } from "./profile";
 
 export interface IComment {
   id: number;
