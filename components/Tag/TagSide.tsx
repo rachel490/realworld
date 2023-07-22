@@ -1,6 +1,6 @@
 import { realWorldApi } from "@/api/axios";
 import { API_URI } from "@/api/apiURI";
-import { ITrendingTagsResponse } from "@/types/api";
+import { ITrendingTagsResponse } from "@/types";
 import TagList from "./TagList";
 
 async function getTagData() {
