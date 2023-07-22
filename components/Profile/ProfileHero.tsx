@@ -1,20 +1,13 @@
 import Image from "next/image";
-import { realWorldApi } from "@/api/axios";
-import { API_URI } from "@/api/apiURI";
-import { IProfileResponse } from "@/types";
-
-const fetchUserData = async (username: string) => {
-  const res = await realWorldApi.get<IProfileResponse>(API_URI.profile.get.USER_PROFILE(username));
-  return res.data.profile;
-};
+import { profileApi } from "@/api/domain/profile";
 
 interface IProps {
   username: string;
 }
 
 async function ProfileHero({ username }: IProps) {
-  const userData = await fetchUserData(username);
-  const { username: name, bio, image, following } = userData;
+  const { profile } = await profileApi.getProfile(username);
+  const { username: name, bio, image, following } = profile;
 
   return (
     <div className="user-info">
