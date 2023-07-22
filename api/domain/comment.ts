@@ -8,6 +8,6 @@ export const commentsApi = {
       API_URI.article.get.ARTICLE_COMMENT(slug),
     );
 
-    return data.comments;
+    return data;
   },
 };
