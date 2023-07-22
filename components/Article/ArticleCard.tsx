@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { IArticle } from "@/types/api";
+import { IArticle } from "@/types";
 import { parseDate } from "@/utils/date";
 import TagList from "../Tag/TagList";
 

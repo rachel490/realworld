@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import { realWorldApi } from "@/api/axios";
 import { API_URI } from "@/api/apiURI";
-import { IFeedResponse } from "@/types/api";
+import { IArticleListResponse } from "@/types";
 import { getServerComponentPathname } from "@/utils/serverActions";
 import Banner from "@/components/Banner/Banner";
 import FeedNavbar from "@/components/FeedNavbar/FeedNavbar";
@@ -10,7 +10,7 @@ import TagSide from "@/components/Tag/TagSide";
 import ArticleList from "@/components/Article/ArticleList";
 
 async function getData(tagName?: string, pageNumber?: number) {
-  const res = await realWorldApi.get<IFeedResponse>(
+  const res = await realWorldApi.get<IArticleListResponse>(
     API_URI.article.get.GLOBAL_FEED(tagName, pageNumber),
   );
 

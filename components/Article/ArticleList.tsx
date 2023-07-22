@@ -1,4 +1,4 @@
-import { IArticle } from "@/types/api";
+import { IArticle } from "@/types";
 import ArticleCard from "./ArticleCard";
 
 interface IProps {
