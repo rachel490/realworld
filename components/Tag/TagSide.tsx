@@ -1,15 +1,8 @@
-import { realWorldApi } from "@/api/axios";
-import { API_URI } from "@/api/apiURI";
-import { ITrendingTagsResponse } from "@/types";
+import { tagApi } from "@/api/domain/tag";
 import TagList from "./TagList";
 
-async function getTagData() {
-  const res = await realWorldApi.get<ITrendingTagsResponse>(API_URI.tag.get.TRENDING_TAG);
-  return res.data;
-}
-
 async function TagSide() {
-  const { tags } = await getTagData();
+  const { tags } = await tagApi.getTrendingTags();
 
   return (
     <div className="col-md-3">
