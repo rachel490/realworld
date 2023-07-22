@@ -16,4 +16,18 @@ export const articleApi = {
 
     return data;
   },
+  getUserPostedArticles: async (username: string) => {
+    const { data } = await realWorldApi.get<IArticleListResponse>(
+      API_URI.article.get.USER_POSTED_ARTICLES(username),
+    );
+
+    return data;
+  },
+  getUserFavoritedArticles: async (username: string) => {
+    const { data } = await realWorldApi.get<IArticleListResponse>(
+      API_URI.article.get.USER_FAVORITED_ARTICLES(username),
+    );
+
+    return data;
+  },
 };

@@ -1,6 +1,4 @@
-import { realWorldApi } from "@/api/axios";
-import { API_URI } from "@/api/apiURI";
-import { IArticleListResponse } from "@/types";
+import { articleApi } from "@/api/domain/article";
 import ArticleList from "@/components/Article/ArticleList";
 import ProfileTabMenu from "@/components/Profile/ProfileTabMenu";
 
@@ -10,16 +8,8 @@ interface IProps {
   };
 }
 
-const getUserFavoritedData = async (username: string) => {
-  const res = await realWorldApi.get<IArticleListResponse>(
-    API_URI.article.get.USER_FAVORITED_ARTICLES(username),
-  );
-
-  return res.data;
-};
-
 async function page({ params }: IProps) {
-  const { articles } = await getUserFavoritedData(params.username);
+  const { articles } = await articleApi.getUserFavoritedArticles(params.username);
 
   return (
     <div>
