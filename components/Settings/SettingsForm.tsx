@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ISettingsBody } from "@/types/api";
+import { IUserSettingsBody } from "@/types";
 import { IInput } from "../Login/LoginForm";
 
 const settingsInputs: IInput[] = [
@@ -41,7 +41,7 @@ const initialValue = {
 };
 
 function SettingsForm() {
-  const [settingsData, setSettingsData] = useState<ISettingsBody>(initialValue);
+  const [settingsData, setSettingsData] = useState<IUserSettingsBody["user"]>(initialValue);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -67,7 +67,7 @@ function SettingsForm() {
                 rows={8}
                 placeholder={input.placeholder}
                 onChange={e => handleChange(e, input.name)}
-                value={settingsData[input.name]}
+                value={settingsData[input.name] || ""}
               />
             ) : (
               <input
@@ -75,7 +75,7 @@ function SettingsForm() {
                 type={input.type}
                 placeholder={input.placeholder}
                 onChange={e => handleChange(e, input.name)}
-                value={settingsData[input.name]}
+                value={settingsData[input.name] || ""}
               />
             )}
           </fieldset>

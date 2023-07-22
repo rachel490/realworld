@@ -27,7 +27,7 @@ export interface ILoginBody {
   };
 }
 
-export interface IUserBody {
+export interface IUserSettingsBody {
   user: {
     email: string;
     username: string;
