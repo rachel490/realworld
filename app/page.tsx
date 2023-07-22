@@ -1,21 +1,11 @@
 /* eslint-disable import/no-cycle */
-import { realWorldApi } from "@/api/axios";
-import { API_URI } from "@/api/apiURI";
-import { IArticleListResponse } from "@/types";
 import { getServerComponentPathname } from "@/utils/serverActions";
 import Banner from "@/components/Banner/Banner";
 import FeedNavbar from "@/components/FeedNavbar/FeedNavbar";
 import Pagination from "@/components/Pagination/Pagination";
 import TagSide from "@/components/Tag/TagSide";
 import ArticleList from "@/components/Article/ArticleList";
-
-async function getData(tagName?: string, pageNumber?: number) {
-  const res = await realWorldApi.get<IArticleListResponse>(
-    API_URI.article.get.GLOBAL_FEED(tagName, pageNumber),
-  );
-
-  return res.data;
-}
+import { articleApi } from "@/api/domain/article";
 
 export interface IMainPageProps {
   searchParams: {
@@ -28,7 +18,10 @@ export interface IMainPageProps {
 const LIMIT = 10;
 
 export default async function Home({ searchParams }: IMainPageProps) {
-  const { articles, articlesCount } = await getData(searchParams.tagName, searchParams.page);
+  const { articles, articlesCount } = await articleApi.getGlobalFeed(
+    searchParams.tagName,
+    searchParams.page,
+  );
   const totalPages = Math.ceil(articlesCount / LIMIT);
 
   // NOTE: generate feedList
