@@ -3,28 +3,18 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { realWorldApi } from "@/api/axios";
-import { API_URI } from "@/api/apiURI";
-import { ILoginBody, IAuthError, IRegisterBody, IUserResponse } from "@/types";
+import { ILoginBody, IAuthError, IRegisterBody } from "@/types";
+import { authApi } from "@/api/domain/auth";
+import { tokenUtil } from "@/utils/token";
 
 function useAuth() {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
-  const generatePayloadData = (data: IRegisterBody["user"] | ILoginBody["user"]) => {
-    return {
-      user: data,
-    };
-  };
-
   const signup = async (registerData: IRegisterBody["user"]) => {
     try {
-      const response = await realWorldApi.post<IUserResponse>(
-        API_URI.auth.post.SIGN_UP,
-        generatePayloadData(registerData),
-      );
-
-      localStorage.setItem("jwt", response.data.user.token);
+      const newUser = await authApi.signup(registerData);
+      tokenUtil.setToken(newUser.token);
       router.push("/");
     } catch (error) {
       handleError(error);
@@ -33,12 +23,8 @@ function useAuth() {
 
   const login = async (loginData: ILoginBody["user"]) => {
     try {
-      const response = await realWorldApi.post<IUserResponse>(
-        API_URI.auth.post.LOGIN,
-        generatePayloadData(loginData),
-      );
-
-      localStorage.setItem("jwt", response.data.user.token);
+      const user = await authApi.login(loginData);
+      tokenUtil.setToken(user.token);
       router.push("/");
     } catch (error) {
       handleError(error);
