@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PAGE_LINKS } from "@/constants/links";
 
 interface IProps {
   username: string;
@@ -8,11 +9,11 @@ interface IProps {
 const profileTabMenus = (username: string) => [
   {
     name: "My Articles",
-    link: `/profile/${username}`,
+    link: PAGE_LINKS.profilePosts(username),
   },
   {
     name: "Favorited Articles",
-    link: `/profile/${username}/favorites`,
+    link: PAGE_LINKS.profileFavorites(username),
   },
 ];
 

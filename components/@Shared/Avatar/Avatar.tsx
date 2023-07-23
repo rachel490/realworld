@@ -11,7 +11,7 @@ interface IProps {
 
 function Avatar({ username, image, createdAt }: IProps) {
   return (
-    <Link href={PAGE_LINKS.profile(username)}>
+    <Link href={PAGE_LINKS.profilePosts(username)}>
       <Image src={image} alt="profile" width={32} height={32} />
       <div className="info">
         <span className="author">{username}</span>

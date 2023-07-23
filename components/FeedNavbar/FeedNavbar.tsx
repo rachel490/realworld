@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PAGE_LINKS } from "@/constants/links";
 
 interface IProps {
   feedList: string[];
@@ -11,7 +12,10 @@ function FeedNavbar({ feedList, currentFeed }: IProps) {
       <ul className="nav nav-pills outline-active">
         {feedList.map(feedName => (
           <li className="nav-item" key={feedName}>
-            <Link className={`nav-link ${currentFeed === feedName ? "active" : ""}`} href="/">
+            <Link
+              className={`nav-link ${currentFeed === feedName ? "active" : ""}`}
+              href={PAGE_LINKS.home}
+            >
               {feedName}
             </Link>
           </li>

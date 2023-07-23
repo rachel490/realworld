@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PAGE_LINKS } from "@/constants/links";
 
 interface IProps {
   tags: string[];
@@ -10,7 +11,7 @@ function TagList({ tags, type }: IProps) {
     <div className="tag-list">
       {tags.map(tag => (
         <Link
-          href={{ pathname: "/", query: { feed: "tag", tagName: tag } }}
+          href={{ pathname: PAGE_LINKS.home, query: { feed: "tag", tagName: tag } }}
           key={tag}
           className={`tag-pill tag-default ${type === "outline" ? "tag-outline" : ""}`}
         >

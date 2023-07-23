@@ -2,19 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { PAGE_LINKS } from "@/constants/links";
 
 const navMenus = [
   {
     name: "Home",
-    link: "/",
+    link: PAGE_LINKS.home,
   },
   {
     name: "Sign in",
-    link: "/login",
+    link: PAGE_LINKS.login,
   },
   {
     name: "Sign up",
-    link: "/register",
+    link: PAGE_LINKS.register,
   },
 ];
 
@@ -24,7 +25,7 @@ function Header() {
   return (
     <nav className="navbar navbar-light">
       <div className="container">
-        <Link className="navbar-brand" href="/">
+        <Link className="navbar-brand" href={PAGE_LINKS.home}>
           conduit
         </Link>
         <ul className="nav navbar-nav pull-xs-right">

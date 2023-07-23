@@ -1,10 +1,11 @@
 import Link from "next/link";
+import { PAGE_LINKS } from "@/constants/links";
 
 function Footer() {
   return (
     <footer>
       <div className="container">
-        <Link href="/" className="logo-font">
+        <Link href={PAGE_LINKS.home} className="logo-font">
           conduit
         </Link>
         <span className="attribution">
