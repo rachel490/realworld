@@ -1,16 +1,14 @@
-export const JWTKey = "jwt";
+import { getCookie } from "cookies-next";
+import { getToken } from "@/app/action";
+import { JWTKey } from "@/constants/cookie";
 
-export const tokenUtil = {
-  getToken: () => {
-    return localStorage.getItem(JWTKey);
-  },
-  setToken: (token: string) => {
-    localStorage.setItem(JWTKey, token);
-  },
-  hasToken: () => {
-    return !!localStorage.getItem(JWTKey);
-  },
-  removeToken: () => {
-    localStorage.removeItem(JWTKey);
-  },
+export const getTokenCookie = async () => {
+  const requestEnv = typeof window === "undefined" ? "server" : "client";
+  if (requestEnv === "server") {
+    const serverCookie = await getToken();
+    return serverCookie;
+  }
+
+  const clientCookie = getCookie(JWTKey);
+  return clientCookie;
 };
