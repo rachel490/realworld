@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { ILoginBody, IAuthError, IRegisterBody } from "@/types";
 import { authApi } from "@/api/domain/auth";
-import { tokenUtil } from "@/utils/token";
+import { setToken } from "@/app/action";
 
 function useAuth() {
   const router = useRouter();
@@ -14,7 +14,7 @@ function useAuth() {
   const signup = async (registerData: IRegisterBody["user"]) => {
     try {
       const newUser = await authApi.signup(registerData);
-      tokenUtil.setToken(newUser.token);
+      await setToken(newUser.token);
       router.push("/");
     } catch (error) {
       handleError(error);
@@ -24,7 +24,7 @@ function useAuth() {
   const login = async (loginData: ILoginBody["user"]) => {
     try {
       const user = await authApi.login(loginData);
-      tokenUtil.setToken(user.token);
+      await setToken(user.token);
       router.push("/");
     } catch (error) {
       handleError(error);
