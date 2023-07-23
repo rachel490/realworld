@@ -23,11 +23,13 @@ export const API_URI = {
       },
       ARTICLE_DETAIL: (slug: string) => `${URI_PATH.ARTICLE}/${slug}`,
       ARTICLE_COMMENT: (slug: string) => `${URI_PATH.ARTICLE}/${slug}/comments`,
-      USER_POSTED_ARTICLES: (username: string) => {
+      USER_POSTED_ARTICLES: (encodedUsername: string) => {
+        const username = decodeURIComponent(encodedUsername);
         const queryString = generateQueryString({ author: username });
         return `${URI_PATH.ARTICLE}${queryString ? `?${queryString}` : ""}`;
       },
-      USER_FAVORITED_ARTICLES: (username: string) => {
+      USER_FAVORITED_ARTICLES: (encodedUsername: string) => {
+        const username = decodeURIComponent(encodedUsername);
         const queryString = generateQueryString({ favorited: username });
         return `${URI_PATH.ARTICLE}${queryString ? `?${queryString}` : ""}`;
       },
@@ -53,13 +55,22 @@ export const API_URI = {
   },
   profile: {
     get: {
-      USER_PROFILE: (username: string) => `${URI_PATH.PROFILE}/${username}`,
+      USER_PROFILE: (encodedUsername: string) => {
+        const username = decodeURIComponent(encodedUsername);
+        return `${URI_PATH.PROFILE}/${username}`;
+      },
     },
     post: {
-      FOLLOW_USER: (username: string) => `${URI_PATH.PROFILE}/${username}/follow`,
+      FOLLOW_USER: (encodedUsername: string) => {
+        const username = decodeURIComponent(encodedUsername);
+        return `${URI_PATH.PROFILE}/${username}/follow`;
+      },
     },
     delete: {
-      UNFOLLOW_USER: (username: string) => `${URI_PATH.PROFILE}/${username}/follow`,
+      UNFOLLOW_USER: (encodedUsername: string) => {
+        const username = decodeURIComponent(encodedUsername);
+        return `${URI_PATH.PROFILE}/${username}/follow`;
+      },
     },
   },
   auth: {
