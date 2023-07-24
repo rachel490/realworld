@@ -15,7 +15,18 @@
   right: 0;
 }
 
+.comment-author-img {
+  margin-right: 5px;
+}
+
 .tag-default.tag-outline:hover {
   background: #bfc7cd !important;
   color: white !important;
+}
+
+button,
+button:focus {
+  border: none;
+  outline: 0;
+  background-color: transparent;
 }

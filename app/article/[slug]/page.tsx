@@ -63,7 +63,7 @@ async function ArticlePage({ params }: IProps) {
                 <Link href={PAGE_LINKS.register}>sign up</Link> to add comments on this article.
               </p>
             )}
-            <CommentList slug={slug} />
+            <CommentList slug={slug} currentUsername={currentUser.username} />
           </div>
         </div>
       </div>

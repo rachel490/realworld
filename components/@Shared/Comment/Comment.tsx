@@ -3,13 +3,17 @@ import Link from "next/link";
 import { IComment } from "@/types";
 import { parseDate } from "@/utils/date";
 import { PAGE_LINKS } from "@/constants/links";
+import CommentDeleteButton from "../Button/CommentDeleteButton/CommentDeleteButton";
 
 interface IProps {
   comment: IComment;
+  currentUsername: string;
+  slug: string;
 }
 
-function Comment({ comment }: IProps) {
+function Comment({ comment, currentUsername, slug }: IProps) {
   const {
+    id,
     author: { username, image },
     body,
     createdAt,
@@ -26,6 +30,7 @@ function Comment({ comment }: IProps) {
           <span>{username}</span>
           <span className="date-posted">{parseDate(createdAt)}</span>
         </Link>
+        {currentUsername === username ? <CommentDeleteButton slug={slug} commentId={id} /> : <></>}
       </div>
     </div>
   );
