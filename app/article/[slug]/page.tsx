@@ -1,4 +1,5 @@
 import { articleApi } from "@/api/domain/article";
+import { authApi } from "@/api/domain/auth";
 import TagList from "@/components/Tag/TagList";
 import CommentList from "@/components/@Shared/Comment/CommentList";
 import ArticleMeta from "@/components/Article/ArticleMeta";
@@ -12,14 +13,23 @@ interface IProps {
 
 async function ArticlePage({ params }: IProps) {
   const { article } = await articleApi.getArticleDetails(params.slug);
-  const { title, body, tagList, slug } = article;
+  const {
+    title,
+    body,
+    tagList,
+    slug,
+    author: { username },
+  } = article;
+
+  const currentUser = await authApi.currentUser();
+  const isAuthorCurrentUser = currentUser.username === username;
 
   return (
     <div className="article-page">
       <div className="banner">
         <div className="container">
           <h1>{title}</h1>
-          <ArticleMeta article={article} />
+          <ArticleMeta article={article} isAuthorCurrentUser={isAuthorCurrentUser} />
         </div>
       </div>
 
@@ -36,7 +46,7 @@ async function ArticlePage({ params }: IProps) {
         <hr />
 
         <div className="article-actions">
-          <ArticleMeta article={article} />
+          <ArticleMeta article={article} isAuthorCurrentUser={isAuthorCurrentUser} />
         </div>
 
         <div className="row">
