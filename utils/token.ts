@@ -1,5 +1,5 @@
-import { getCookie } from "cookies-next";
-import { getToken } from "@/app/action";
+import { getCookie, hasCookie } from "cookies-next";
+import { checkToken, getToken } from "@/app/action";
 import { JWTKey } from "@/constants/cookie";
 
 export const getTokenCookie = async () => {
@@ -11,4 +11,15 @@ export const getTokenCookie = async () => {
 
   const clientCookie = getCookie(JWTKey);
   return clientCookie;
+};
+
+export const checkIsLoggedIn = async () => {
+  const requestEnv = typeof window === "undefined" ? "server" : "client";
+  if (requestEnv === "server") {
+    const hasServerCookie = await checkToken();
+    return hasServerCookie;
+  }
+
+  const hasClientCookie = hasCookie(JWTKey);
+  return hasClientCookie;
 };
