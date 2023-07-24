@@ -21,7 +21,7 @@ function Comment({ comment }: IProps) {
         <p className="card-text">{body}</p>
       </div>
       <div className="card-footer">
-        <Link href={PAGE_LINKS.profile(username)} className="comment-author">
+        <Link href={PAGE_LINKS.profilePosts(username)} className="comment-author">
           <Image alt="profile" width="30" height="30" src={image} className="comment-author-img" />
           <span>{username}</span>
           <span className="date-posted">{parseDate(createdAt)}</span>
