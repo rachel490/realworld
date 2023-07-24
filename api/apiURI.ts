@@ -45,7 +45,8 @@ export const API_URI = {
     delete: {
       ARTICLE: (slug: string) => `${URI_PATH.ARTICLE}/${slug}`,
       ARTICLE_LIKE: (slug: string) => `${URI_PATH.ARTICLE}/${slug}/favorite`,
-      ARTICLE_COMMENT: (slug: string) => `${URI_PATH.ARTICLE}/${slug}/comments`,
+      ARTICLE_COMMENT: (slug: string, commentId: number) =>
+        `${URI_PATH.ARTICLE}/${slug}/comments/${commentId}`,
     },
   },
   tag: {
