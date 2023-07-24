@@ -4,6 +4,7 @@ import { PAGE_LINKS } from "@/constants/links";
 import Avatar from "../@Shared/Avatar/Avatar";
 import FollowButton from "../@Shared/Button/FollowButton/FollowButton";
 import LikeButton from "../@Shared/Button/LikeButton/LikeButton";
+import ArticleDeleteButton from "../@Shared/Button/ArticleDeleteButton/ArticleDeleteButton";
 
 interface IProps {
   article: IArticle;
@@ -27,9 +28,7 @@ function ArticleMeta({ article, isAuthorCurrentUser }: IProps) {
             <i className="ion-edit" /> Edit Article
           </Link>
           &nbsp;&nbsp;
-          <button className="btn btn-outline-danger btn-sm">
-            <i className="ion-trash-a" /> Delete Article
-          </button>
+          <ArticleDeleteButton slug={slug} />
         </>
       ) : (
         <>
