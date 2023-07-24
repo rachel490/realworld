@@ -10,7 +10,7 @@ export async function setToken(token: string) {
 }
 
 export async function deleteToken() {
-  cookies().set(JWTKey, "");
+  cookies().delete(JWTKey);
 }
 
 export async function getToken() {

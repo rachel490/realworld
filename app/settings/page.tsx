@@ -1,4 +1,5 @@
 import { authApi } from "@/api/domain/auth";
+import LogoutButton from "@/components/@Shared/Button/LogoutButton/LogoutButton";
 import SettingsForm from "@/components/Settings/SettingsForm";
 
 async function SettingsPage() {
@@ -11,7 +12,7 @@ async function SettingsPage() {
           <div className="col-md-6 offset-md-3 col-xs-12">
             <h1 className="text-xs-center">Your Settings</h1>
             <SettingsForm currentUser={currentUser} />
-            <button className="btn btn-outline-danger">Or click here to logout.</button>
+            <LogoutButton />
           </div>
         </div>
       </div>
