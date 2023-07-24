@@ -1,7 +1,12 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+
 "use client";
 
 import { useState } from "react";
-import { IUserSettingsBody } from "@/types";
+import { useRouter } from "next/navigation";
+import { IUser, IUserSettingsBody } from "@/types";
+import { authApi } from "@/api/domain/auth";
+import { PAGE_LINKS } from "@/constants/links";
 import { IInput } from "../Login/LoginForm";
 
 const settingsInputs: IInput[] = [
@@ -32,16 +37,20 @@ const settingsInputs: IInput[] = [
   },
 ];
 
-const initialValue = {
-  image: "",
-  username: "",
-  bio: "",
-  email: "",
-  password: "",
-};
+interface IProps {
+  currentUser: IUser;
+}
 
-function SettingsForm() {
-  const [settingsData, setSettingsData] = useState<IUserSettingsBody["user"]>(initialValue);
+function SettingsForm({ currentUser }: IProps) {
+  const router = useRouter();
+
+  const [settingsData, setSettingsData] = useState<IUserSettingsBody["user"]>({
+    image: currentUser.image,
+    bio: currentUser.bio,
+    username: currentUser.username,
+    email: currentUser.email,
+    password: "",
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -51,9 +60,11 @@ function SettingsForm() {
     setSettingsData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("settings data", settingsData);
+    await authApi.updateUser({ user: settingsData });
+    router.refresh();
+    router.push(PAGE_LINKS.profilePosts(currentUser.username));
   };
 
   return (
