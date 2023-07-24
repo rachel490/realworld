@@ -24,14 +24,13 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 realWorldApi.interceptors.request.use(
   async (config: CustomAxiosRequestConfig) => {
     const { params } = config;
+    const token = (await getTokenCookie()) || "";
     if (params && params.isAuth) {
-      const token = await getTokenCookie();
       if (!token) {
         redirectPage(PAGE_LINKS.register);
       }
-
-      config.headers.Authorization = `Bearer ${token as string}`;
     }
+    config.headers.Authorization = `Bearer ${token as string}`;
     return config;
   },
   error => Promise.reject(error),
