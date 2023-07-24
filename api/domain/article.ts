@@ -1,4 +1,4 @@
-import { IArticleItemResponse, IArticleListResponse } from "@/types";
+import { IArticleItemResponse, IArticleListResponse, ILikedArticleResponse } from "@/types";
 import { API_URI } from "../apiURI";
 import { realWorldApi } from "../axios";
 
@@ -26,6 +26,23 @@ export const articleApi = {
   getUserFavoritedArticles: async (username: string) => {
     const { data } = await realWorldApi.get<IArticleListResponse>(
       API_URI.article.get.USER_FAVORITED_ARTICLES(username),
+    );
+
+    return data;
+  },
+  likeArticle: async (slug: string) => {
+    const { data } = await realWorldApi.post<ILikedArticleResponse>(
+      API_URI.article.post.ARTICLE_LIKE(slug),
+      {},
+      { params: { isAuth: true } },
+    );
+
+    return data;
+  },
+  unlikeArticle: async (slug: string) => {
+    const { data } = await realWorldApi.delete<ILikedArticleResponse>(
+      API_URI.article.post.ARTICLE_LIKE(slug),
+      { params: { isAuth: true } },
     );
 
     return data;
