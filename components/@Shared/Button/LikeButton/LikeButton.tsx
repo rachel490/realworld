@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+
+"use client";
+
 interface IProps {
   favoritesCount: number;
   isFavorited: boolean;
@@ -6,7 +10,7 @@ interface IProps {
 
 function LikeButton({ favoritesCount, isFavorited, slug }: IProps) {
   return (
-    <button className="btn btn-sm btn-outline-primary">
+    <button className={`btn btn-sm ${isFavorited ? "btn-primary" : "btn-outline-primary"}`}>
       <i className="ion-heart" />
       &nbsp; {`${isFavorited ? "Unfavorite" : "Favorite"}`} Article
       <span className="counter">{`(${favoritesCount})`}</span>

@@ -11,6 +11,7 @@ interface IProps {
 function ArticleCard({ articleData }: IProps) {
   const {
     title,
+    favorited,
     favoritesCount,
     description,
     author: { username, image },
@@ -23,7 +24,11 @@ function ArticleCard({ articleData }: IProps) {
     <div className="article-preview">
       <div className="article-meta">
         <Avatar username={username} image={image} createdAt={createdAt} />
-        <button className="btn btn-outline-primary btn-sm pull-xs-right">
+        <button
+          className={`btn btn-sm pull-xs-right ${
+            favorited ? "btn-primary" : "btn-outline-primary"
+          } `}
+        >
           <i className="ion-heart" />
           {favoritesCount}
         </button>
