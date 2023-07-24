@@ -1,4 +1,4 @@
-import { ILoginBody, IRegisterBody, IUserResponse } from "@/types";
+import { ILoginBody, IRegisterBody, IUserResponse, IUserSettingsBody } from "@/types";
 import { realWorldApi } from "../axios";
 import { API_URI } from "../apiURI";
 
@@ -23,6 +23,19 @@ export const authApi = {
       generatePayloadData(loginData),
     );
 
+    return data.user;
+  },
+  currentUser: async () => {
+    const { data } = await realWorldApi.get<IUserResponse>(API_URI.auth.get.USER, {
+      params: { isAuth: true },
+    });
+
+    return data.user;
+  },
+  updateUser: async (updatedUser: IUserSettingsBody) => {
+    const { data } = await realWorldApi.put<IUserResponse>(API_URI.auth.update.USER, updatedUser, {
+      params: { isAuth: true },
+    });
     return data.user;
   },
 };
