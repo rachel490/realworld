@@ -2,18 +2,34 @@
 
 "use client";
 
+import { useState } from "react";
+import { profileApi } from "@/api/domain/profile";
+
 interface IProps {
   isFollowing: boolean;
   username: string;
 }
 
 function FollowButton({ isFollowing, username }: IProps) {
+  const [following, setFollowing] = useState(isFollowing);
+
+  const handleClick = async () => {
+    if (following) {
+      const { profile } = await profileApi.unfollowUser(username);
+      setFollowing(profile.following);
+    } else {
+      const { profile } = await profileApi.followUser(username);
+      setFollowing(profile.following);
+    }
+  };
+
   return (
     <button
-      className={`btn btn-sm ${isFollowing ? "btn-secondary" : "btn-outline-secondary"} action-btn`}
+      className={`btn btn-sm ${following ? "btn-secondary" : "btn-outline-secondary"} action-btn`}
+      onClick={handleClick}
     >
       <i className="ion-plus-round" />
-      &nbsp; {`${isFollowing ? "Unfollow" : "Follow"}`} {username}
+      &nbsp; {`${following ? "Unfollow" : "Follow"}`} {username}
     </button>
   );
 }
