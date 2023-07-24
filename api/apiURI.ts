@@ -62,14 +62,12 @@ export const API_URI = {
       },
     },
     post: {
-      FOLLOW_USER: (encodedUsername: string) => {
-        const username = decodeURIComponent(encodedUsername);
+      FOLLOW_USER: (username: string) => {
         return `${URI_PATH.PROFILE}/${username}/follow`;
       },
     },
     delete: {
-      UNFOLLOW_USER: (encodedUsername: string) => {
-        const username = decodeURIComponent(encodedUsername);
+      UNFOLLOW_USER: (username: string) => {
         return `${URI_PATH.PROFILE}/${username}/follow`;
       },
     },
