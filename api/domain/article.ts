@@ -1,4 +1,9 @@
-import { IArticleItemResponse, IArticleListResponse, ILikedArticleResponse } from "@/types";
+import {
+  IArticleBody,
+  IArticleItemResponse,
+  IArticleListResponse,
+  ILikedArticleResponse,
+} from "@/types";
 import { API_URI } from "../apiURI";
 import { realWorldApi } from "../axios";
 
@@ -29,6 +34,27 @@ export const articleApi = {
     );
 
     return data;
+  },
+  postArticle: async (newArticle: IArticleBody) => {
+    const { data } = await realWorldApi.post<IArticleItemResponse>(
+      API_URI.article.post.ARTICLE,
+      newArticle,
+      { params: { isAuth: true } },
+    );
+
+    return data;
+  },
+  updateArticle: async (slug: string, updatedArticle: IArticleBody) => {
+    const { data } = await realWorldApi.put<IArticleItemResponse>(
+      API_URI.article.update.ARTICLE(slug),
+      updatedArticle,
+      { params: { isAuth: true } },
+    );
+
+    return data;
+  },
+  deleteArticle: async (slug: string) => {
+    await realWorldApi.delete(API_URI.article.delete.ARTICLE(slug), { params: { isAuth: true } });
   },
   likeArticle: async (slug: string) => {
     const { data } = await realWorldApi.post<ILikedArticleResponse>(
