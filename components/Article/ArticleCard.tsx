@@ -3,6 +3,7 @@ import { IArticle } from "@/types";
 import { PAGE_LINKS } from "@/constants/links";
 import TagList from "../Tag/TagList";
 import Avatar from "../@Shared/Avatar/Avatar";
+import LikeButton from "../@Shared/Button/LikeButton/LikeButton";
 
 interface IProps {
   articleData: IArticle;
@@ -24,14 +25,12 @@ function ArticleCard({ articleData }: IProps) {
     <div className="article-preview">
       <div className="article-meta">
         <Avatar username={username} image={image} createdAt={createdAt} />
-        <button
-          className={`btn btn-sm pull-xs-right ${
-            favorited ? "btn-primary" : "btn-outline-primary"
-          } `}
-        >
-          <i className="ion-heart" />
-          {favoritesCount}
-        </button>
+        <LikeButton
+          favoritesCount={favoritesCount}
+          isFavorited={favorited}
+          slug={slug}
+          type="short"
+        />
       </div>
       <Link href={PAGE_LINKS.article(slug)} className="preview-link">
         <h1>{title}</h1>

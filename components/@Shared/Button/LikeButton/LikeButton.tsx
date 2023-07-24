@@ -9,9 +9,10 @@ interface IProps {
   favoritesCount: number;
   isFavorited: boolean;
   slug: string;
+  type?: "short" | "long";
 }
 
-function LikeButton({ favoritesCount, isFavorited, slug }: IProps) {
+function LikeButton({ favoritesCount, isFavorited, slug, type = "long" }: IProps) {
   const [favorited, setFavorited] = useState(isFavorited);
   const [favoriteCount, setFavoriteCount] = useState(favoritesCount);
 
@@ -30,11 +31,19 @@ function LikeButton({ favoritesCount, isFavorited, slug }: IProps) {
   return (
     <button
       onClick={handleClick}
-      className={`btn btn-sm ${favorited ? "btn-primary" : "btn-outline-primary"}`}
+      className={`btn btn-sm
+        ${favorited ? "btn-primary" : "btn-outline-primary"} 
+        ${type === "short" ? "pull-xs-right" : ""}`}
     >
       <i className="ion-heart" />
-      &nbsp; {`${favorited ? "Unfavorite" : "Favorite"}`} Article
-      <span className="counter">{`(${favoriteCount})`}</span>
+      {type === "short" ? (
+        favoriteCount
+      ) : (
+        <>
+          &nbsp; {`${favorited ? "Unfavorite" : "Favorite"}`} Article
+          <span className="counter">{`(${favoriteCount})`}</span>
+        </>
+      )}
     </button>
   );
 }
