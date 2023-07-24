@@ -1,5 +1,8 @@
+import Link from "next/link";
 import { articleApi } from "@/api/domain/article";
 import { authApi } from "@/api/domain/auth";
+import { checkIsLoggedIn } from "@/utils/token";
+import { PAGE_LINKS } from "@/constants/links";
 import TagList from "@/components/Tag/TagList";
 import CommentList from "@/components/@Shared/Comment/CommentList";
 import ArticleMeta from "@/components/Article/ArticleMeta";
@@ -23,6 +26,7 @@ async function ArticlePage({ params }: IProps) {
 
   const currentUser = await authApi.currentUser();
   const isAuthorCurrentUser = currentUser.username === username;
+  const isLoggedIn = await checkIsLoggedIn();
 
   return (
     <div className="article-page">
@@ -51,7 +55,14 @@ async function ArticlePage({ params }: IProps) {
 
         <div className="row">
           <div className="col-xs-12 col-md-8 offset-md-2">
-            <CommentForm slug={slug} />
+            {isLoggedIn ? (
+              <CommentForm slug={slug} />
+            ) : (
+              <p>
+                <Link href={PAGE_LINKS.login}>Sign in</Link> or
+                <Link href={PAGE_LINKS.register}>sign up</Link> to add comments on this article.
+              </p>
+            )}
             <CommentList slug={slug} />
           </div>
         </div>
