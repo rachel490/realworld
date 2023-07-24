@@ -10,9 +10,10 @@ import { commentsApi } from "@/api/domain/comment";
 
 interface IProps {
   slug: string;
+  userImage: string;
 }
 
-function CommentForm({ slug }: IProps) {
+function CommentForm({ slug, userImage }: IProps) {
   const router = useRouter();
   const [content, setContent] = useState<ICommentBody["comment"]["body"]>("");
 
@@ -27,7 +28,6 @@ function CommentForm({ slug }: IProps) {
     setContent("");
   };
 
-  // TODO: current user image로 변경해야함.
   return (
     <form className="card comment-form" onSubmit={handleSubmit}>
       <div className="card-block">
@@ -40,13 +40,7 @@ function CommentForm({ slug }: IProps) {
         />
       </div>
       <div className="card-footer">
-        <Image
-          alt=""
-          width="30"
-          height="30"
-          src="http://i.imgur.com/Qr71crq.jpg"
-          className="comment-author-img"
-        />
+        <Image alt="" width="30" height="30" src={userImage} className="comment-author-img" />
         <button className="btn btn-sm btn-primary" type="submit" disabled={!content.length}>
           Post Comment
         </button>

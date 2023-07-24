@@ -56,7 +56,7 @@ async function ArticlePage({ params }: IProps) {
         <div className="row">
           <div className="col-xs-12 col-md-8 offset-md-2">
             {isLoggedIn ? (
-              <CommentForm slug={slug} />
+              <CommentForm slug={slug} userImage={currentUser.image} />
             ) : (
               <p>
                 <Link href={PAGE_LINKS.login}>Sign in</Link> or
