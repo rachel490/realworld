@@ -1,5 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import { profileApi } from "@/api/domain/profile";
+import { authApi } from "@/api/domain/auth";
+import { PAGE_LINKS } from "@/constants/links";
+import FollowButton from "../@Shared/Button/FollowButton/FollowButton";
 
 interface IProps {
   username: string;
@@ -9,6 +13,9 @@ async function ProfileHero({ username }: IProps) {
   const { profile } = await profileApi.getProfile(username);
   const { username: name, bio, image, following } = profile;
 
+  const currentUser = await authApi.currentUser();
+  const isAuthorCurrentUser = currentUser.username === name;
+
   return (
     <div className="user-info">
       <div className="container">
@@ -17,10 +24,16 @@ async function ProfileHero({ username }: IProps) {
             <Image src={image} className="user-img" alt="user profile" width={100} height={100} />
             <h4>{name}</h4>
             <p>{bio}</p>
-            <button className="btn btn-sm btn-outline-secondary action-btn">
-              <i className="ion-plus-round" />
-              &nbsp; {following ? "Unfollow" : "Follow"} {name}
-            </button>
+            {isAuthorCurrentUser ? (
+              <Link
+                className="btn btn-sm btn-outline-secondary action-btn"
+                href={PAGE_LINKS.settings}
+              >
+                <i className="ion-gear-a" /> Edit Profile Settings
+              </Link>
+            ) : (
+              <FollowButton isFollowing={following} username={name} />
+            )}
           </div>
         </div>
       </div>
