@@ -19,5 +19,5 @@ export async function getToken() {
 }
 
 export async function checkToken() {
-  cookies().has(JWTKey);
+  return cookies().has(JWTKey);
 }
