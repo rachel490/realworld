@@ -1,7 +1,10 @@
 import { Metadata } from "next";
 import { Source_Sans_3, Source_Serif_4, Merriweather_Sans, Titillium_Web } from "next/font/google";
+import { checkIsLoggedIn } from "@/utils/token";
+import { authApi } from "@/api/domain/auth";
 import Footer from "@/components/Layout/Footer/Footer";
 import Header from "@/components/Layout/Header/Header";
+import AuthenticatedHeader from "@/components/Layout/Header/AuthenticatedHeader";
 import "./globals.css";
 
 const sourceSans3 = Source_Sans_3({
@@ -34,14 +37,23 @@ export const metadata: Metadata = {
   description: "Real World w/ Next.js 13",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const isLoggedIn = await checkIsLoggedIn();
+  const currentUser = { image: "", username: "" };
+
+  if (isLoggedIn) {
+    const { image, username } = await authApi.currentUser();
+    currentUser.image = image;
+    currentUser.username = username;
+  }
+
   return (
     <html
       lang="en"
       className={`${sourceSans3.variable} ${sourceSerif4.variable} ${merriweatherSans.variable} ${titilliumWeb.variable}`}
     >
       <body>
-        <Header />
+        {isLoggedIn ? <AuthenticatedHeader currentUser={currentUser} /> : <Header />}
         <main>{children}</main>
         <Footer />
       </body>
