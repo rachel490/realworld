@@ -8,7 +8,7 @@ interface IProps {
   };
 }
 
-async function page({ params }: IProps) {
+async function UserFavoritedArticlePage({ params }: IProps) {
   const { articles } = await articleApi.getUserFavoritedArticles(params.username);
 
   return (
@@ -19,4 +19,4 @@ async function page({ params }: IProps) {
   );
 }
 
-export default page;
+export default UserFavoritedArticlePage;
