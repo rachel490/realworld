@@ -1,9 +1,13 @@
+/* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { articleApi } from "@/api/domain/article";
+import { checkIsLoggedIn } from "@/utils/token";
+import { PAGE_LINKS } from "@/constants/links";
 
 interface IProps {
   favoritesCount: number;
@@ -13,10 +17,17 @@ interface IProps {
 }
 
 function LikeButton({ favoritesCount, isFavorited, slug, type = "long" }: IProps) {
+  const router = useRouter();
   const [favorited, setFavorited] = useState(isFavorited);
   const [favoriteCount, setFavoriteCount] = useState(favoritesCount);
 
   const handleClick = async () => {
+    const loggedIn = await checkIsLoggedIn();
+    if (!loggedIn) {
+      router.push(PAGE_LINKS.register);
+      return;
+    }
+
     if (favorited) {
       const { article } = await articleApi.unlikeArticle(slug);
       setFavorited(article.favorited);
