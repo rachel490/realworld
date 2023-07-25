@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Markdown from "marked-react";
 import { articleApi } from "@/api/domain/article";
 import { authApi } from "@/api/domain/auth";
 import { checkIsLoggedIn } from "@/utils/token";
@@ -49,7 +50,7 @@ async function ArticlePage({ params }: IProps) {
         <div className="row article-content">
           <div className="col-md-12">
             <div>
-              <p>{body}</p>
+              <Markdown>{body}</Markdown>
             </div>
             <TagList tags={tagList} type="outline" />
           </div>
