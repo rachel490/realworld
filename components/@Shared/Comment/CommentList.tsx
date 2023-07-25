@@ -3,7 +3,7 @@ import Comment from "./Comment";
 
 interface IProps {
   slug: string;
-  currentUsername: string;
+  currentUsername?: string;
 }
 
 async function CommentList({ slug, currentUsername }: IProps) {

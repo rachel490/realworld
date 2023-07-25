@@ -7,7 +7,7 @@ import CommentDeleteButton from "../Button/CommentDeleteButton/CommentDeleteButt
 
 interface IProps {
   comment: IComment;
-  currentUsername: string;
+  currentUsername?: string;
   slug: string;
 }
 
@@ -30,7 +30,11 @@ function Comment({ comment, currentUsername, slug }: IProps) {
           <span>{username}</span>
           <span className="date-posted">{parseDate(createdAt)}</span>
         </Link>
-        {currentUsername === username ? <CommentDeleteButton slug={slug} commentId={id} /> : <></>}
+        {currentUsername && currentUsername === username ? (
+          <CommentDeleteButton slug={slug} commentId={id} />
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

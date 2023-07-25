@@ -24,9 +24,17 @@ async function ArticlePage({ params }: IProps) {
     author: { username },
   } = article;
 
-  const currentUser = await authApi.currentUser();
-  const isAuthorCurrentUser = currentUser.username === username;
   const isLoggedIn = await checkIsLoggedIn();
+  let isAuthorCurrentUser = false;
+  let currentUserImage;
+  let currentUsername;
+
+  if (isLoggedIn) {
+    const currentUser = await authApi.currentUser();
+    currentUserImage = currentUser.image;
+    currentUsername = currentUser.username;
+    isAuthorCurrentUser = currentUser.username === username;
+  }
 
   return (
     <div className="article-page">
@@ -56,14 +64,14 @@ async function ArticlePage({ params }: IProps) {
         <div className="row">
           <div className="col-xs-12 col-md-8 offset-md-2">
             {isLoggedIn ? (
-              <CommentForm slug={slug} userImage={currentUser.image} />
+              <CommentForm slug={slug} userImage={currentUserImage} />
             ) : (
               <p>
                 <Link href={PAGE_LINKS.login}>Sign in</Link> or
                 <Link href={PAGE_LINKS.register}>sign up</Link> to add comments on this article.
               </p>
             )}
-            <CommentList slug={slug} currentUsername={currentUser.username} />
+            <CommentList slug={slug} currentUsername={currentUsername} />
           </div>
         </div>
       </div>

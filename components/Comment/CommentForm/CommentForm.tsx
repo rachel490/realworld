@@ -10,8 +10,11 @@ import { commentsApi } from "@/api/domain/comment";
 
 interface IProps {
   slug: string;
-  userImage: string;
+  userImage?: string;
 }
+
+const PLACEHOLDER_IMAGE =
+  "https://images.unsplash.com/photo-1690016024119-da444e8451fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80";
 
 function CommentForm({ slug, userImage }: IProps) {
   const router = useRouter();
@@ -40,7 +43,13 @@ function CommentForm({ slug, userImage }: IProps) {
         />
       </div>
       <div className="card-footer">
-        <Image alt="" width="30" height="30" src={userImage} className="comment-author-img" />
+        <Image
+          alt=""
+          width="30"
+          height="30"
+          src={userImage || PLACEHOLDER_IMAGE}
+          className="comment-author-img"
+        />
         <button className="btn btn-sm btn-primary" type="submit" disabled={!content.length}>
           Post Comment
         </button>

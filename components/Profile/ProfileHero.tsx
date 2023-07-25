@@ -3,6 +3,7 @@ import Link from "next/link";
 import { profileApi } from "@/api/domain/profile";
 import { authApi } from "@/api/domain/auth";
 import { PAGE_LINKS } from "@/constants/links";
+import { checkIsLoggedIn } from "@/utils/token";
 import FollowButton from "../@Shared/Button/FollowButton/FollowButton";
 
 interface IProps {
@@ -13,8 +14,13 @@ async function ProfileHero({ username }: IProps) {
   const { profile } = await profileApi.getProfile(username);
   const { username: name, bio, image, following } = profile;
 
-  const currentUser = await authApi.currentUser();
-  const isAuthorCurrentUser = currentUser.username === name;
+  const isLoggedIn = await checkIsLoggedIn();
+  let isAuthorCurrentUser = false;
+
+  if (isLoggedIn) {
+    const currentUser = await authApi.currentUser();
+    isAuthorCurrentUser = currentUser.username === name;
+  }
 
   return (
     <div className="user-info">
