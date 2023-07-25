@@ -25,6 +25,7 @@ function useAuth() {
     try {
       const user = await authApi.login(loginData);
       await setToken(user.token);
+      router.refresh();
       router.push("/");
     } catch (error) {
       handleError(error);

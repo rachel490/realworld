@@ -11,6 +11,7 @@ function LogoutButton() {
 
   const handleLogout = async () => {
     await deleteTokenCookie();
+    router.refresh();
     router.push(PAGE_LINKS.home);
   };
 
