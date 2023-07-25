@@ -43,7 +43,7 @@ function RegisterForm() {
 
   return (
     <>
-      {errorMessage.length && (
+      {!!errorMessage.length && (
         <ul className="error-messages">
           {errorMessage.map(message => (
             <li key={message}>{message}</li>

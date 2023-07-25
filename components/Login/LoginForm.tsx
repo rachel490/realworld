@@ -45,7 +45,7 @@ function LoginForm() {
 
   return (
     <>
-      {errorMessage && (
+      {!!errorMessage.length && (
         <ul className="error-messages">
           <li>{errorMessage}</li>
         </ul>
