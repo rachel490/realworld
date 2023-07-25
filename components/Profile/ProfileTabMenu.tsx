@@ -9,7 +9,7 @@ interface IProps {
 const profileTabMenus = (username: string) => [
   {
     name: "My Articles",
-    link: PAGE_LINKS.profilePosts(username),
+    link: PAGE_LINKS.profilePosts(username, true),
   },
   {
     name: "Favorited Articles",
