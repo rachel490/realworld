@@ -6,6 +6,7 @@ import Pagination from "@/components/Pagination/Pagination";
 import TagSide from "@/components/Tag/TagSide";
 import ArticleList from "@/components/Article/ArticleList";
 import { articleApi } from "@/api/domain/article";
+import { checkIsLoggedIn } from "@/utils/token";
 
 export interface IMainPageProps {
   searchParams: {
@@ -18,14 +19,19 @@ export interface IMainPageProps {
 const LIMIT = 10;
 
 export default async function Home({ searchParams }: IMainPageProps) {
-  const { articles, articlesCount } = await articleApi.getGlobalFeed(
-    searchParams.tagName,
-    searchParams.page,
-  );
+  const isLoggedIn = await checkIsLoggedIn();
+  const { articles, articlesCount } =
+    searchParams.feed === "my"
+      ? await articleApi.getMyFeed(searchParams.page)
+      : await articleApi.getGlobalFeed(searchParams.tagName, searchParams.page);
+
   const totalPages = Math.ceil(articlesCount / LIMIT);
 
   // NOTE: generate feedList
   const feedList = ["Global Feed"];
+  if (isLoggedIn) {
+    feedList.push("Your Feed");
+  }
   if (searchParams.feed === "tag" && searchParams.tagName) {
     feedList.push(searchParams.tagName);
   }

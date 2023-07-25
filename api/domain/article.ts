@@ -14,6 +14,12 @@ export const articleApi = {
     );
     return data;
   },
+  getMyFeed: async (pageNumber?: number) => {
+    const { data } = await realWorldApi.get<IArticleListResponse>(
+      API_URI.article.get.MY_FEED(pageNumber),
+    );
+    return data;
+  },
   getArticleDetails: async (slug: string) => {
     const { data } = await realWorldApi.get<IArticleItemResponse>(
       API_URI.article.get.ARTICLE_DETAIL(slug),
