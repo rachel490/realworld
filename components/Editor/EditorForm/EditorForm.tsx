@@ -6,7 +6,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { articleApi } from "@/api/domain/article";
-import { IArticleBody } from "@/types";
+import { IArticle, IArticleBody, IArticleItemResponse } from "@/types";
 import { PAGE_LINKS } from "@/constants/links";
 
 const articleInputs = [
@@ -25,17 +25,25 @@ const articleInputs = [
   },
 ];
 
-const initialValue = {
-  title: "",
-  description: "",
-  body: "",
-  tagList: [],
+const generateInitialValue = (article?: IArticle) => {
+  return {
+    title: article?.title || "",
+    description: article?.description || "",
+    body: article?.body || "",
+    tagList: article?.tagList || [],
+  };
 };
 
-function EditorForm() {
+interface IProps {
+  initialArticle?: IArticleItemResponse;
+}
+
+function EditorForm({ initialArticle }: IProps) {
   const router = useRouter();
 
-  const [articleData, setArticleData] = useState<IArticleBody["article"]>(initialValue);
+  const [articleData, setArticleData] = useState<IArticleBody["article"]>(
+    generateInitialValue(initialArticle?.article),
+  );
   const [currentTag, setCurrentTag] = useState("");
 
   const handleChange = (
@@ -48,7 +56,9 @@ function EditorForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { article } = await articleApi.postArticle({ article: articleData });
+    const { article } = initialArticle
+      ? await articleApi.updateArticle(initialArticle.article.slug, { article: articleData })
+      : await articleApi.postArticle({ article: articleData });
     router.push(PAGE_LINKS.article(article.slug));
   };
 
