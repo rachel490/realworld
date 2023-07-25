@@ -4,7 +4,7 @@ const nextConfig = {
     serverActions: true,
   },
   images: {
-    domains: ["i.imgur.com", "api.realworld.io"],
+    domains: ["i.imgur.com", "api.realworld.io", "images.unsplash.com"],
   },
 };
 
