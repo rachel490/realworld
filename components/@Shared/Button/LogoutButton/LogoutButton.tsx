@@ -2,11 +2,16 @@
 
 "use client";
 
-import { deleteToken } from "@/app/action";
+import { useRouter } from "next/navigation";
+import { PAGE_LINKS } from "@/constants/links";
+import { deleteTokenCookie } from "@/utils/token";
 
 function LogoutButton() {
+  const router = useRouter();
+
   const handleLogout = async () => {
-    await deleteToken();
+    await deleteTokenCookie();
+    router.push(PAGE_LINKS.home);
   };
 
   return (
