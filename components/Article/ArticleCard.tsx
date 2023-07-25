@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { IArticle } from "@/types";
 import { PAGE_LINKS } from "@/constants/links";
-import TagList from "../Tag/TagList";
+import TagList from "../Home/Tag/TagList";
 import Avatar from "../@Shared/Avatar/Avatar";
-import LikeButton from "../@Shared/Button/LikeButton/LikeButton";
+import LikeButton from "../@Shared/Button/LikeButton";
 
 interface IProps {
   articleData: IArticle;

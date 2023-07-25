@@ -4,10 +4,10 @@ import { articleApi } from "@/api/domain/article";
 import { authApi } from "@/api/domain/auth";
 import { checkIsLoggedIn } from "@/utils/token";
 import { PAGE_LINKS } from "@/constants/links";
-import TagList from "@/components/Tag/TagList";
-import CommentList from "@/components/@Shared/Comment/CommentList";
+import TagList from "@/components/Home/Tag/TagList";
+import CommentList from "@/components/Article/Comment/CommentList";
 import ArticleMeta from "@/components/Article/ArticleMeta";
-import CommentForm from "@/components/Comment/CommentForm/CommentForm";
+import CommentForm from "@/components/Article/Comment/CommentForm";
 
 interface IProps {
   params: {

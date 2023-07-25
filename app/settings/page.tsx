@@ -1,5 +1,5 @@
 import { authApi } from "@/api/domain/auth";
-import LogoutButton from "@/components/@Shared/Button/LogoutButton/LogoutButton";
+import LogoutButton from "@/components/Settings/LogoutButton";
 import SettingsForm from "@/components/Settings/SettingsForm";
 
 async function SettingsPage() {

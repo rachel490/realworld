@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { Source_Sans_3, Source_Serif_4, Merriweather_Sans, Titillium_Web } from "next/font/google";
 import { checkIsLoggedIn } from "@/utils/token";
 import { authApi } from "@/api/domain/auth";
-import Footer from "@/components/Layout/Footer/Footer";
+import Footer from "@/components/Layout/Footer";
 import Header from "@/components/Layout/Header/Header";
 import AuthenticatedHeader from "@/components/Layout/Header/AuthenticatedHeader";
 import "./globals.css";

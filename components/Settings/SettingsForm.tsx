@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { IUser, IUserSettingsBody } from "@/types";
 import { authApi } from "@/api/domain/auth";
 import { PAGE_LINKS } from "@/constants/links";
-import { IInput } from "../Login/LoginForm";
+import { IInput } from "../Auth/Login/LoginForm";
 
 const settingsInputs: IInput[] = [
   {

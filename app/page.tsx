@@ -1,9 +1,9 @@
 /* eslint-disable import/no-cycle */
 import { getServerComponentPathname } from "@/utils/serverActions";
-import Banner from "@/components/Banner/Banner";
-import FeedNavbar from "@/components/FeedNavbar/FeedNavbar";
-import Pagination from "@/components/Pagination/Pagination";
-import TagSide from "@/components/Tag/TagSide";
+import Banner from "@/components/Home/Banner";
+import FeedNavbar from "@/components/Home/FeedNavbar";
+import Pagination from "@/components/Home/Pagination";
+import TagSide from "@/components/Home/Tag/TagSide";
 import ArticleList from "@/components/Article/ArticleList";
 import { articleApi } from "@/api/domain/article";
 import { checkIsLoggedIn } from "@/utils/token";

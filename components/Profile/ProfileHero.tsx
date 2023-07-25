@@ -4,7 +4,7 @@ import { profileApi } from "@/api/domain/profile";
 import { authApi } from "@/api/domain/auth";
 import { PAGE_LINKS } from "@/constants/links";
 import { checkIsLoggedIn } from "@/utils/token";
-import FollowButton from "../@Shared/Button/FollowButton/FollowButton";
+import FollowButton from "../@Shared/Button/FollowButton";
 
 interface IProps {
   username: string;

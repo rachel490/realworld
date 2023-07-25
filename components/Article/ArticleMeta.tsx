@@ -2,9 +2,9 @@ import Link from "next/link";
 import { IArticle } from "@/types";
 import { PAGE_LINKS } from "@/constants/links";
 import Avatar from "../@Shared/Avatar/Avatar";
-import FollowButton from "../@Shared/Button/FollowButton/FollowButton";
-import LikeButton from "../@Shared/Button/LikeButton/LikeButton";
-import ArticleDeleteButton from "../@Shared/Button/ArticleDeleteButton/ArticleDeleteButton";
+import FollowButton from "../@Shared/Button/FollowButton";
+import LikeButton from "../@Shared/Button/LikeButton";
+import ArticleDeleteButton from "./ArticleDeleteButton";
 
 interface IProps {
   article: IArticle;

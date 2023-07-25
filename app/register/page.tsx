@@ -1,5 +1,5 @@
 import Link from "next/link";
-import RegisterForm from "@/components/Register/RegisterForm";
+import RegisterForm from "@/components/Auth/Register/RegisterForm";
 import { PAGE_LINKS } from "@/constants/links";
 
 function RegisterPage() {

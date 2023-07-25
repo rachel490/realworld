@@ -1,5 +1,5 @@
 import Link from "next/link";
-import LoginForm from "@/components/Login/LoginForm";
+import LoginForm from "@/components/Auth/Login/LoginForm";
 import { PAGE_LINKS } from "@/constants/links";
 
 function LoginPage() {
