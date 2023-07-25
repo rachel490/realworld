@@ -41,6 +41,7 @@ export interface IArticleBody {
     description: string;
     body: string;
     tagList: string[];
+    [key: string]: string | string[];
   };
 }
 
