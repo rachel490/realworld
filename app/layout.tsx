@@ -5,6 +5,7 @@ import { authApi } from "@/api/domain/auth";
 import Footer from "@/components/Layout/Footer";
 import Header from "@/components/Layout/Header/Header";
 import AuthenticatedHeader from "@/components/Layout/Header/AuthenticatedHeader";
+import AuthSession from "@/components/NextAuth/NextAuthProvider";
 import "./globals.css";
 
 const sourceSans3 = Source_Sans_3({
@@ -52,11 +53,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       lang="en"
       className={`${sourceSans3.variable} ${sourceSerif4.variable} ${merriweatherSans.variable} ${titilliumWeb.variable}`}
     >
-      <body>
-        {isLoggedIn ? <AuthenticatedHeader currentUser={currentUser} /> : <Header />}
-        <main>{children}</main>
-        <Footer />
-      </body>
+      <AuthSession>
+        <body>
+          {isLoggedIn ? <AuthenticatedHeader currentUser={currentUser} /> : <Header />}
+          <main>{children}</main>
+          <Footer />
+        </body>
+      </AuthSession>
     </html>
   );
 }
