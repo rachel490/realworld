@@ -23,7 +23,7 @@ function LikeButton({ favoritesCount, isFavorited, slug, type = "long" }: IProps
   const [favoriteCount, setFavoriteCount] = useState(favoritesCount);
 
   const handleClick = async () => {
-    if (!session) {
+    if (!session || session.status === "unauthenticated") {
       router.push(PAGE_LINKS.register);
       return;
     }

@@ -19,7 +19,7 @@ function FollowButton({ isFollowing, username }: IProps) {
   const [following, setFollowing] = useState(isFollowing);
 
   const handleClick = async () => {
-    if (!session) {
+    if (!session || session.status === "unauthenticated") {
       router.push(PAGE_LINKS.register);
       return;
     }
