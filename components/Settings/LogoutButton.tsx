@@ -3,15 +3,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { PAGE_LINKS } from "@/constants/links";
-import { deleteTokenCookie } from "@/utils/token";
 
 function LogoutButton() {
   const router = useRouter();
 
-  const handleLogout = async () => {
-    await deleteTokenCookie();
-    router.refresh();
+  const handleLogout = () => {
+    signOut();
     router.push(PAGE_LINKS.home);
   };
 
