@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { ILoginBody } from "@/types";
-import useAuth from "@/hooks/useAuth";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { PAGE_LINKS } from "@/constants/links";
 
 export interface IInput {
   type: string;
@@ -29,8 +31,9 @@ const initialValue = {
 };
 
 function LoginForm() {
+  const router = useRouter();
   const [loginData, setLoginData] = useState<ILoginBody["user"]>(initialValue);
-  const { login, errorMessage } = useAuth();
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
     const { value } = e.target;
@@ -38,9 +41,21 @@ function LoginForm() {
     setLoginData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    login(loginData);
+
+    const response = await signIn("nextauth-credential", {
+      email: loginData.email,
+      password: loginData.password,
+      redirect: false,
+    });
+    if (response?.error) {
+      const errorObject = JSON.parse(response?.error) as string[];
+      setErrorMessage(errorObject);
+    } else {
+      router.refresh();
+      router.push(PAGE_LINKS.home);
+    }
   };
 
   return (
