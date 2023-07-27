@@ -1,3 +1,7 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable no-param-reassign */
+/* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -7,6 +11,11 @@ import { login } from "@/hooks/useNextAuth";
 import { ILoginBody } from "@/types";
 
 export const nextAuthOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+  },
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       id: "nextauth-credential",
@@ -29,5 +38,17 @@ export const nextAuthOptions: NextAuthOptions = {
   ],
   pages: {
     signIn: "/login",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      console.log("jwt callback called");
+      return { ...token, ...user };
+    },
+    async session({ session, token }) {
+      console.log("session callback called");
+      session.user = token as any;
+
+      return session;
+    },
   },
 };
