@@ -7,7 +7,7 @@
 
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { login } from "@/hooks/useNextAuth";
+import { login } from "@/utils/auth";
 import { ILoginBody } from "@/types";
 
 export const nextAuthOptions: NextAuthOptions = {
