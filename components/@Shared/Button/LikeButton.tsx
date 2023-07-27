@@ -6,8 +6,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { articleApi } from "@/api/domain/article";
-import { checkIsLoggedIn } from "@/utils/token";
 import { PAGE_LINKS } from "@/constants/links";
+import { useSession } from "next-auth/react";
 
 interface IProps {
   favoritesCount: number;
@@ -17,13 +17,13 @@ interface IProps {
 }
 
 function LikeButton({ favoritesCount, isFavorited, slug, type = "long" }: IProps) {
+  const session = useSession();
   const router = useRouter();
   const [favorited, setFavorited] = useState(isFavorited);
   const [favoriteCount, setFavoriteCount] = useState(favoritesCount);
 
   const handleClick = async () => {
-    const loggedIn = await checkIsLoggedIn();
-    if (!loggedIn) {
+    if (!session) {
       router.push(PAGE_LINKS.register);
       return;
     }
