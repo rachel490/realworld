@@ -1,12 +1,13 @@
 /* eslint-disable import/no-cycle */
+import { getServerSession } from "next-auth";
+import { articleApi } from "@/api/domain/article";
+import { nextAuthOptions } from "@/lib/nextAuth";
 import { getServerComponentPathname } from "@/utils/serverActions";
 import Banner from "@/components/Home/Banner";
 import FeedNavbar from "@/components/Home/FeedNavbar";
 import Pagination from "@/components/Home/Pagination";
 import TagSide from "@/components/Home/Tag/TagSide";
 import ArticleList from "@/components/Article/ArticleList";
-import { articleApi } from "@/api/domain/article";
-import { checkIsLoggedIn } from "@/utils/token";
 
 export interface IMainPageProps {
   searchParams: {
@@ -19,7 +20,7 @@ export interface IMainPageProps {
 const LIMIT = 10;
 
 export default async function Home({ searchParams }: IMainPageProps) {
-  const isLoggedIn = await checkIsLoggedIn();
+  const session = await getServerSession(nextAuthOptions);
   const { articles, articlesCount } =
     searchParams.feed === "my"
       ? await articleApi.getMyFeed(searchParams.page)
@@ -29,7 +30,7 @@ export default async function Home({ searchParams }: IMainPageProps) {
 
   // NOTE: generate feedList
   const feedList = ["Global Feed"];
-  if (isLoggedIn) {
+  if (session) {
     feedList.push("Your Feed");
   }
   if (searchParams.feed === "tag" && searchParams.tagName) {
