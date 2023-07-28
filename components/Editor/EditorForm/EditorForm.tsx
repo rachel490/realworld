@@ -59,6 +59,7 @@ function EditorForm({ initialArticle }: IProps) {
     const { article } = initialArticle
       ? await articleApi.updateArticle(initialArticle.article.slug, { article: articleData })
       : await articleApi.postArticle({ article: articleData });
+    router.refresh();
     router.push(PAGE_LINKS.article(article.slug));
   };
 

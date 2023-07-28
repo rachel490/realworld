@@ -27,9 +27,11 @@ function FollowButton({ isFollowing, username }: IProps) {
     if (following) {
       const { profile } = await profileApi.unfollowUser(username);
       setFollowing(profile.following);
+      router.refresh();
     } else {
       const { profile } = await profileApi.followUser(username);
       setFollowing(profile.following);
+      router.refresh();
     }
   };
 

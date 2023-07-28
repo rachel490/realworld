@@ -32,10 +32,12 @@ function LikeButton({ favoritesCount, isFavorited, slug, type = "long" }: IProps
       const { article } = await articleApi.unlikeArticle(slug);
       setFavorited(article.favorited);
       setFavoriteCount(article.favoritesCount);
+      router.refresh();
     } else {
       const { article } = await articleApi.likeArticle(slug);
       setFavorited(article.favorited);
       setFavoriteCount(article.favoritesCount);
+      router.refresh();
     }
   };
 
