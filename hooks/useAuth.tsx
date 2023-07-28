@@ -14,8 +14,7 @@ function useAuth() {
   const signup = async (registerData: IRegisterBody["user"]) => {
     try {
       const newUser = await authApi.signup(registerData);
-      await setToken(newUser.token);
-      router.push("/");
+      return newUser;
     } catch (error) {
       handleError(error);
     }
