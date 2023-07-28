@@ -75,6 +75,7 @@ function EditorForm({ initialArticle }: IProps) {
     if (e.key !== "Enter") return;
     setArticleData(prev => ({ ...prev, tagList: [...prev.tagList, currentTag] }));
     setCurrentTag("");
+    e.preventDefault();
   };
 
   const deleteTag = (tagName: string) => {
