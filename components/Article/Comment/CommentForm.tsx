@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { ICommentBody } from "@/types";
-import { commentsApi } from "@/api/domain/comment";
+import { commentsApi } from "@/axios/domain/comment";
 import ButtonSpinner from "@/components/@Shared/Spinner/ButtonSpinner";
 
 interface IProps {

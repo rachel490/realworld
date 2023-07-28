@@ -5,7 +5,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { articleApi } from "@/api/domain/article";
+import { articleApi } from "@/axios/domain/article";
 import { IArticle, IArticleBody, IArticleItemResponse } from "@/types";
 import { PAGE_LINKS } from "@/constants/links";
 import { handleError } from "@/utils/service";

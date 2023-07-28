@@ -6,7 +6,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { IUser, IUserSettingsBody } from "@/types";
-import { authApi } from "@/api/domain/auth";
+import { authApi } from "@/axios/domain/auth";
 import { PAGE_LINKS } from "@/constants/links";
 import { useSession } from "next-auth/react";
 import { IInput } from "../Auth/Login/LoginForm";

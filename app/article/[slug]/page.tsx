@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import Markdown from "marked-react";
-import { articleApi } from "@/api/domain/article";
+import { articleApi } from "@/axios/domain/article";
 import { nextAuthOptions } from "@/lib/nextAuth";
 import { PAGE_LINKS } from "@/constants/links";
 import TagList from "@/components/Home/Tag/TagList";

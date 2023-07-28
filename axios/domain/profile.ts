@@ -1,4 +1,4 @@
-import { realWorldApi } from "@/api/axios";
+import { realWorldApi } from "@/axios/axios";
 import { IProfileResponse } from "@/types";
 import { API_URI } from "../apiURI";
 

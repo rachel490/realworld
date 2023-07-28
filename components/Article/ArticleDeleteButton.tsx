@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { articleApi } from "@/api/domain/article";
+import { articleApi } from "@/axios/domain/article";
 import { PAGE_LINKS } from "@/constants/links";
 import { useTransition } from "react";
 import ButtonSpinner from "../@Shared/Spinner/ButtonSpinner";

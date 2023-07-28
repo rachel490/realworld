@@ -1,4 +1,4 @@
-import { articleApi } from "@/api/domain/article";
+import { articleApi } from "@/axios/domain/article";
 import { IMainPageProps } from "@/app/page";
 import { getServerComponentPathname } from "@/utils/serverActions";
 import ArticleCard from "./ArticleCard";

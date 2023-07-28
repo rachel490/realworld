@@ -1,4 +1,4 @@
-import { articleApi } from "@/api/domain/article";
+import { articleApi } from "@/axios/domain/article";
 import EditorForm from "@/components/Editor/EditorForm/EditorForm";
 
 interface IProps {
