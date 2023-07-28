@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { articleApi } from "@/api/domain/article";
 import { IArticle, IArticleBody, IArticleItemResponse } from "@/types";
 import { PAGE_LINKS } from "@/constants/links";
+import { handleError } from "@/utils/service";
 
 const articleInputs = [
   { name: "title", placeholder: "Article Title", type: "text", isRequired: true },
@@ -15,13 +16,11 @@ const articleInputs = [
     name: "description",
     placeholder: "What's this article about?",
     type: "text",
-    isRequired: true,
   },
   {
     name: "body",
     placeholder: "Write your article (in markdown)",
     type: "textarea",
-    isRequired: true,
   },
 ];
 
@@ -40,11 +39,11 @@ interface IProps {
 
 function EditorForm({ initialArticle }: IProps) {
   const router = useRouter();
-
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
+  const [currentTag, setCurrentTag] = useState("");
   const [articleData, setArticleData] = useState<IArticleBody["article"]>(
     generateInitialValue(initialArticle?.article),
   );
-  const [currentTag, setCurrentTag] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -56,11 +55,16 @@ function EditorForm({ initialArticle }: IProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { article } = initialArticle
-      ? await articleApi.updateArticle(initialArticle.article.slug, { article: articleData })
-      : await articleApi.postArticle({ article: articleData });
-    router.refresh();
-    router.push(PAGE_LINKS.article(article.slug));
+    try {
+      const { article } = initialArticle
+        ? await articleApi.updateArticle(initialArticle.article.slug, { article: articleData })
+        : await articleApi.postArticle({ article: articleData });
+      router.refresh();
+      router.push(PAGE_LINKS.article(article.slug));
+    } catch (error) {
+      const currentError = handleError(error);
+      setErrorMessage(currentError);
+    }
   };
 
   const handleCurrentTag = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,56 +83,62 @@ function EditorForm({ initialArticle }: IProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <fieldset>
-        {articleInputs.map(input => (
-          <fieldset key={input.name} className="form-group">
-            {input.type === "textarea" ? (
-              <textarea
-                className="form-control"
-                rows={8}
-                placeholder={input.placeholder}
-                value={articleData[input.name]}
-                onChange={e => handleChange(e, input.name)}
-                required={input.isRequired}
-              />
-            ) : (
-              <input
-                value={articleData[input.name]}
-                onChange={e => handleChange(e, input.name)}
-                type={input.type}
-                className="form-control form-control-lg"
-                placeholder={input.placeholder}
-                required={input.isRequired}
-              />
-            )}
+    <>
+      {!!errorMessage.length && (
+        <ul className="error-messages">
+          <li>{errorMessage}</li>
+        </ul>
+      )}
+
+      <form onSubmit={handleSubmit}>
+        <fieldset>
+          {articleInputs.map(input => (
+            <fieldset key={input.name} className="form-group">
+              {input.type === "textarea" ? (
+                <textarea
+                  className="form-control"
+                  rows={8}
+                  placeholder={input.placeholder}
+                  value={articleData[input.name]}
+                  onChange={e => handleChange(e, input.name)}
+                />
+              ) : (
+                <input
+                  value={articleData[input.name]}
+                  onChange={e => handleChange(e, input.name)}
+                  type={input.type}
+                  className="form-control form-control-lg"
+                  placeholder={input.placeholder}
+                />
+              )}
+            </fieldset>
+          ))}
+          <fieldset className="form-group">
+            <input
+              value={currentTag}
+              onChange={handleCurrentTag}
+              onKeyDown={addTag}
+              type="text"
+              className="form-control form-control-lg"
+              placeholder="Enter tags"
+            />
+            <div className="tag-list">
+              {articleData.tagList.map(tag => (
+                <span key={tag} className="tag-default tag-pill ng-binding ng-scope">
+                  <button type="button" onClick={() => deleteTag(tag)}>
+                    <i className="ion-close-round" />
+                  </button>
+                  {tag}
+                </span>
+              ))}
+            </div>
           </fieldset>
-        ))}
-        <fieldset className="form-group">
-          <input
-            value={currentTag}
-            onChange={handleCurrentTag}
-            onKeyDown={addTag}
-            type="text"
-            className="form-control form-control-lg"
-            placeholder="Enter tags"
-          />
-          <div className="tag-list">
-            {articleData.tagList.map(tag => (
-              <span key={tag} className="tag-default tag-pill ng-binding ng-scope">
-                <button type="button" onClick={() => deleteTag(tag)}>
-                  <i className="ion-close-round" />
-                </button>
-                {tag}
-              </span>
-            ))}
-          </div>
+          <button className="btn btn-lg pull-xs-right btn-primary" type="submit">
+            Publish Article
+          </button>
         </fieldset>
-        <button className="btn btn-lg pull-xs-right btn-primary" type="submit">
-          Publish Article
-        </button>
-      </fieldset>
-    </form>
+      </form>
+    </>
   );
 }
 
