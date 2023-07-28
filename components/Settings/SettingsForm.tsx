@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 "use client";
@@ -7,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { IUser, IUserSettingsBody } from "@/types";
 import { authApi } from "@/api/domain/auth";
 import { PAGE_LINKS } from "@/constants/links";
+import { useSession } from "next-auth/react";
 import { IInput } from "../Auth/Login/LoginForm";
 
 const settingsInputs: IInput[] = [
@@ -43,6 +45,7 @@ interface IProps {
 
 function SettingsForm({ currentUser }: IProps) {
   const router = useRouter();
+  const { data, update } = useSession();
 
   const [settingsData, setSettingsData] = useState<IUserSettingsBody["user"]>({
     image: currentUser.image,
@@ -51,6 +54,11 @@ function SettingsForm({ currentUser }: IProps) {
     email: currentUser.email,
     password: "",
   });
+
+  if (!data || !data.user) {
+    router.push(PAGE_LINKS.register);
+    return null;
+  }
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -62,9 +70,22 @@ function SettingsForm({ currentUser }: IProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await authApi.updateUser({ user: settingsData });
+    const updatedUser = await authApi.updateUser({ user: settingsData });
+    await updateSession(updatedUser);
     router.refresh();
     router.push(PAGE_LINKS.profilePosts(currentUser.username));
+  };
+
+  const updateSession = async (updatedUser: IUser) => {
+    const newSession = {
+      ...data,
+      user: {
+        ...data.user,
+        ...updatedUser,
+      },
+    };
+
+    update(newSession);
   };
 
   return (

@@ -1,9 +1,9 @@
-/* eslint-disable import/no-cycle */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable no-param-reassign */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/require-await */
 
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -27,11 +27,9 @@ export const nextAuthOptions: NextAuthOptions = {
         const loginData = { email: credentials?.email, password: credentials?.password };
         const response = await login(loginData as ILoginBody["user"]);
         if (response.success && response.user) {
-          console.log("logged in user :", response.user);
           return response.user as any;
         }
 
-        console.log("error", response.error);
         throw new Error(JSON.stringify(response?.error));
       },
     }),
@@ -40,12 +38,13 @@ export const nextAuthOptions: NextAuthOptions = {
     signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, user }) {
-      console.log("jwt callback called");
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update") {
+        return { ...token, ...session.user };
+      }
       return { ...token, ...user };
     },
     async session({ session, token }) {
-      console.log("session callback called");
       session.user = token as any;
 
       return session;
