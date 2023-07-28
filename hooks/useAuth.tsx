@@ -2,10 +2,10 @@
 /* eslint-disable consistent-return */
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import { ILoginBody, IAuthError, IRegisterBody } from "@/types";
+import { ILoginBody, IRegisterBody } from "@/types";
 import { authApi } from "@/api/domain/auth";
 import { setToken } from "@/app/action";
+import { handleError } from "@/utils/service";
 
 function useAuth() {
   const router = useRouter();
@@ -16,7 +16,8 @@ function useAuth() {
       const newUser = await authApi.signup(registerData);
       return newUser;
     } catch (error) {
-      handleError(error);
+      const currentError = handleError(error);
+      setErrorMessage(currentError);
     }
   };
 
@@ -27,23 +28,9 @@ function useAuth() {
       router.refresh();
       router.push("/");
     } catch (error) {
-      handleError(error);
+      const currentError = handleError(error);
+      setErrorMessage(currentError);
     }
-  };
-
-  const handleError = (error: any) => {
-    if (axios.isAxiosError<IAuthError>(error)) {
-      if (error.response?.data.errors) {
-        const errors = Object.entries(error.response.data.errors).map(
-          ([key, value]) => `${key} ${value[0]}`,
-        );
-        return setErrorMessage([...errors]);
-      }
-
-      return setErrorMessage([error.message]);
-    }
-
-    return setErrorMessage(["An unexpected error occurred"]);
   };
 
   return { login, signup, errorMessage };

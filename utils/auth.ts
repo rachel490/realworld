@@ -1,6 +1,6 @@
-import axios from "axios";
 import { authApi } from "@/api/domain/auth";
-import { IAuthError, ILoginBody, IRegisterBody } from "@/types";
+import { ILoginBody, IRegisterBody } from "@/types";
+import { handleError } from "./service";
 
 export async function login(loginData: ILoginBody["user"]) {
   try {
@@ -20,18 +20,3 @@ export async function signup(registerData: IRegisterBody["user"]) {
     return { success: false, error };
   }
 }
-
-const handleError = (error: any) => {
-  if (axios.isAxiosError<IAuthError>(error)) {
-    if (error.response?.data.errors) {
-      const errors = Object.entries(error.response.data.errors).map(
-        ([key, value]) => `${key} ${value[0]}`,
-      );
-      return [...errors];
-    }
-
-    return [error.message];
-  }
-
-  return ["An unexpected error occurred"];
-};
