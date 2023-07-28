@@ -39,3 +39,21 @@ button:focus {
   width: 100%;
   padding-block: 50px;
 }
+
+.btn {
+  display: flex;
+  align-items: center;
+}
+
+.btn i,
+a i {
+  margin-right: 4px;
+}
+
+.article-page .article-meta .btn {
+  display: inline-flex;
+}
+
+.form-group .tag-list {
+  margin-top: 10px;
+}
