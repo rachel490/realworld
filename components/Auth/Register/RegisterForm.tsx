@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { IRegisterBody } from "@/types";
 import useAuth from "@/hooks/useAuth";
+import { PAGE_LINKS } from "@/constants/links";
 
 const registerInputs = [
   {
@@ -29,6 +32,7 @@ const initialData = {
 };
 
 function RegisterForm() {
+  const router = useRouter();
   const [registerData, setRegisterData] = useState<IRegisterBody["user"]>(initialData);
   const { signup, errorMessage } = useAuth();
 
@@ -36,9 +40,19 @@ function RegisterForm() {
     setRegisterData(prev => ({ ...prev, [name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signup(registerData);
+    const user = await signup(registerData);
+    if (!user) return;
+
+    await signIn("nextauth-credential", {
+      email: registerData.email,
+      password: registerData.password,
+      redirect: false,
+    });
+
+    router.refresh();
+    router.push(PAGE_LINKS.home);
   };
 
   return (
