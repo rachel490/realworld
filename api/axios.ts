@@ -1,8 +1,9 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-param-reassign */
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { PAGE_LINKS } from "@/constants/links";
 import { redirectPage } from "@/utils/redirect";
-import { getTokenCookie } from "@/utils/token";
+import { getSession } from "@/utils/session";
 
 export const realWorldApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_KEY,
@@ -24,13 +25,14 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 realWorldApi.interceptors.request.use(
   async (config: CustomAxiosRequestConfig) => {
     const { params } = config;
-    const token = (await getTokenCookie()) || "";
+    const session = await getSession();
+    const token = session?.user.token || "";
     if (params && params.isAuth) {
-      if (!token) {
+      if (!session) {
         redirectPage(PAGE_LINKS.register);
       }
     }
-    config.headers.Authorization = `Bearer ${token as string}`;
+    config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   error => Promise.reject(error),
@@ -45,8 +47,8 @@ realWorldApi.interceptors.response.use(
 
     switch (response?.status) {
       case 401: {
-        const token = await getTokenCookie();
-        if (!token) {
+        const session = await getSession();
+        if (!session) {
           redirectPage(PAGE_LINKS.register);
           console.log("🚨 401 error 🚨 : No Auth");
         }

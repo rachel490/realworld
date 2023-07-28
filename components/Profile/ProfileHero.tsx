@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
 import { profileApi } from "@/api/domain/profile";
-import { authApi } from "@/api/domain/auth";
 import { PAGE_LINKS } from "@/constants/links";
-import { checkIsLoggedIn } from "@/utils/token";
+import { nextAuthOptions } from "@/lib/nextAuth";
 import FollowButton from "../@Shared/Button/FollowButton";
 
 interface IProps {
@@ -11,16 +11,11 @@ interface IProps {
 }
 
 async function ProfileHero({ username }: IProps) {
+  const session = await getServerSession(nextAuthOptions);
   const { profile } = await profileApi.getProfile(username);
   const { username: name, bio, image, following } = profile;
 
-  const isLoggedIn = await checkIsLoggedIn();
-  let isAuthorCurrentUser = false;
-
-  if (isLoggedIn) {
-    const currentUser = await authApi.currentUser();
-    isAuthorCurrentUser = currentUser.username === name;
-  }
+  const isAuthorCurrentUser = session?.user.username === username;
 
   return (
     <div className="user-info">

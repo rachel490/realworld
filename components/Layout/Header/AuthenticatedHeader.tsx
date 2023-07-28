@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { PAGE_LINKS } from "@/constants/links";
-import { IUser } from "@/types";
 
 const authenticatedNavMenus = (username: string) => [
   {
@@ -27,13 +27,17 @@ const authenticatedNavMenus = (username: string) => [
   },
 ];
 
-interface IProps {
-  currentUser: Pick<IUser, "image" | "username">;
-}
-
-function AuthenticatedHeader({ currentUser }: IProps) {
+function AuthenticatedHeader() {
   const pathname = usePathname();
-  const { username, image } = currentUser;
+  const router = useRouter();
+  const { data } = useSession();
+
+  if (!data || !data.user) {
+    router.push(PAGE_LINKS.register);
+    return null;
+  }
+
+  const { username, image } = data.user;
 
   const isActiveMenu = (menuLink: string) => {
     if (pathname === "/") {

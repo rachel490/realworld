@@ -1,13 +1,17 @@
+import { getServerSession } from "next-auth";
+import { nextAuthOptions } from "@/lib/nextAuth";
 import { commentsApi } from "@/api/domain/comment";
 import Comment from "./Comment";
 
 interface IProps {
   slug: string;
-  currentUsername?: string;
 }
 
-async function CommentList({ slug, currentUsername }: IProps) {
+async function CommentList({ slug }: IProps) {
+  const session = await getServerSession(nextAuthOptions);
   const { comments } = await commentsApi.getComments(slug);
+
+  const currentUsername = session?.user.username || "";
 
   return (
     <div>

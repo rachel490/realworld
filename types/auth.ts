@@ -38,7 +38,7 @@ export interface IUserSettingsBody {
   };
 }
 
-export interface IAuthError {
+export interface ICustomError {
   errors: {
     [key: string]: string[];
   };

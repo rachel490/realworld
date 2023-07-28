@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { nextAuthOptions } from "@/lib/nextAuth";
 import { IArticle } from "@/types";
 import { PAGE_LINKS } from "@/constants/links";
 import Avatar from "../@Shared/Avatar/Avatar";
@@ -8,10 +10,9 @@ import ArticleDeleteButton from "./ArticleDeleteButton";
 
 interface IProps {
   article: IArticle;
-  isAuthorCurrentUser: boolean;
 }
 
-function ArticleMeta({ article, isAuthorCurrentUser }: IProps) {
+async function ArticleMeta({ article }: IProps) {
   const {
     slug,
     author: { username, image, following },
@@ -19,6 +20,11 @@ function ArticleMeta({ article, isAuthorCurrentUser }: IProps) {
     favorited,
     favoritesCount,
   } = article;
+
+  const session = await getServerSession(nextAuthOptions);
+
+  const isAuthorCurrentUser = session?.user.username === username;
+
   return (
     <div className="article-meta">
       <Avatar username={username} image={image} createdAt={createdAt} />

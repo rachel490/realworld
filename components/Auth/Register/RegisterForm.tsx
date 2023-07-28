@@ -1,8 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { IRegisterBody } from "@/types";
 import useAuth from "@/hooks/useAuth";
+import { PAGE_LINKS } from "@/constants/links";
+import ButtonSpinner from "@/components/@Shared/Spinner/ButtonSpinner";
 
 const registerInputs = [
   {
@@ -29,7 +33,9 @@ const initialData = {
 };
 
 function RegisterForm() {
+  const router = useRouter();
   const [registerData, setRegisterData] = useState<IRegisterBody["user"]>(initialData);
+  const [isPending, startTransition] = useTransition();
   const { signup, errorMessage } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
@@ -38,7 +44,20 @@ function RegisterForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signup(registerData);
+
+    startTransition(async () => {
+      const user = await signup(registerData);
+      if (!user) return;
+
+      await signIn("nextauth-credential", {
+        email: registerData.email,
+        password: registerData.password,
+        redirect: false,
+      });
+
+      router.refresh();
+      router.push(PAGE_LINKS.home);
+    });
   };
 
   return (
@@ -63,7 +82,9 @@ function RegisterForm() {
             />
           </fieldset>
         ))}
-        <button className="btn btn-lg btn-primary pull-xs-right">Sign up</button>
+        <button className="btn btn-lg btn-primary pull-xs-right" disabled={isPending}>
+          {isPending && <ButtonSpinner />}Sign up
+        </button>
       </form>
     </>
   );

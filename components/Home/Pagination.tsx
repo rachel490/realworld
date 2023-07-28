@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable-next-line react/no-array-index-key */
 
@@ -8,7 +7,7 @@ import { generateURL } from "@/utils/url";
 
 interface IProps {
   totalPages: number;
-  searchParams: IMainPageProps["searchParams"];
+  searchParams?: IMainPageProps["searchParams"];
   currentURL: string;
 }
 
@@ -22,7 +21,7 @@ function Pagination({ totalPages, searchParams, currentURL }: IProps) {
             <li
               key={idx}
               className={`page-item ng-scope ${
-                Number(searchParams.page || 1) === idx + 1 ? "active" : ""
+                Number(searchParams?.page || 1) === idx + 1 ? "active" : ""
               }`}
             >
               <Link

@@ -1,6 +1,7 @@
-import { articleApi } from "@/api/domain/article";
+import { Suspense } from "react";
 import ArticleList from "@/components/Article/ArticleList";
 import ProfileTabMenu from "@/components/Profile/ProfileTabMenu";
+import Spinner from "@/components/@Shared/Spinner/Spinner";
 
 interface IProps {
   params: {
@@ -8,14 +9,14 @@ interface IProps {
   };
 }
 
-async function ProfilePage({ params }: IProps) {
-  const { articles } = await articleApi.getUserPostedArticles(params.username);
-
+function ProfilePage({ params }: IProps) {
   return (
-    <>
+    <div>
       <ProfileTabMenu username={params.username} currentTab="My Articles" />
-      <ArticleList articlesData={articles} />
-    </>
+      <Suspense fallback={<Spinner />}>
+        <ArticleList params={params} type="user post" />
+      </Suspense>
+    </div>
   );
 }
 

@@ -1,12 +1,12 @@
 /* eslint-disable import/no-cycle */
-import { getServerComponentPathname } from "@/utils/serverActions";
+import { Suspense } from "react";
+import { getServerSession } from "next-auth";
+import { nextAuthOptions } from "@/lib/nextAuth";
 import Banner from "@/components/Home/Banner";
 import FeedNavbar from "@/components/Home/FeedNavbar";
-import Pagination from "@/components/Home/Pagination";
 import TagSide from "@/components/Home/Tag/TagSide";
 import ArticleList from "@/components/Article/ArticleList";
-import { articleApi } from "@/api/domain/article";
-import { checkIsLoggedIn } from "@/utils/token";
+import Spinner from "@/components/@Shared/Spinner/Spinner";
 
 export interface IMainPageProps {
   searchParams: {
@@ -16,20 +16,12 @@ export interface IMainPageProps {
   };
 }
 
-const LIMIT = 10;
-
 export default async function Home({ searchParams }: IMainPageProps) {
-  const isLoggedIn = await checkIsLoggedIn();
-  const { articles, articlesCount } =
-    searchParams.feed === "my"
-      ? await articleApi.getMyFeed(searchParams.page)
-      : await articleApi.getGlobalFeed(searchParams.tagName, searchParams.page);
-
-  const totalPages = Math.ceil(articlesCount / LIMIT);
+  const session = await getServerSession(nextAuthOptions);
 
   // NOTE: generate feedList
   const feedList = ["Global Feed"];
-  if (isLoggedIn) {
+  if (session) {
     feedList.push("Your Feed");
   }
   if (searchParams.feed === "tag" && searchParams.tagName) {
@@ -50,12 +42,12 @@ export default async function Home({ searchParams }: IMainPageProps) {
         <div className="row">
           <div className="col-md-9">
             <FeedNavbar feedList={feedList} currentFeed={getCurrentFeed()} />
-            <ArticleList articlesData={articles} />
-            <Pagination
-              totalPages={totalPages}
-              searchParams={searchParams}
-              currentURL={getServerComponentPathname()}
-            />
+            <Suspense fallback={<Spinner />}>
+              <ArticleList
+                searchParams={searchParams}
+                type={searchParams.feed === "my" ? "my feed" : "global feed"}
+              />
+            </Suspense>
           </div>
           <TagSide />
         </div>
