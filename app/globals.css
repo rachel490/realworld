@@ -31,3 +31,11 @@ button:focus {
   background-color: transparent;
   padding: 0;
 }
+
+.spinner-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-block: 50px;
+}
