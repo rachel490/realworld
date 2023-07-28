@@ -77,7 +77,9 @@ function EditorForm({ initialArticle }: IProps) {
 
   const addTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
-    setArticleData(prev => ({ ...prev, tagList: [...prev.tagList, currentTag] }));
+    if (currentTag && !articleData.tagList.includes(currentTag)) {
+      setArticleData(prev => ({ ...prev, tagList: [...prev.tagList, currentTag] }));
+    }
     setCurrentTag("");
     e.preventDefault();
   };
