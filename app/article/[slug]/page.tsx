@@ -52,8 +52,8 @@ async function ArticlePage({ params }: IProps) {
               <CommentForm slug={slug} />
             ) : (
               <p>
-                <Link href={PAGE_LINKS.login}>Sign in</Link> or
-                <Link href={PAGE_LINKS.register}>sign up</Link> to add comments on this article.
+                <Link href={PAGE_LINKS.login}>Sign in</Link>&nbsp;or&nbsp;
+                <Link href={PAGE_LINKS.register}>Sign up</Link> to add comments on this article.
               </p>
             )}
             <CommentList slug={slug} />
