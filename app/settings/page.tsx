@@ -1,4 +1,4 @@
-import { authApi } from "@/api/domain/auth";
+import { authApi } from "@/axios/domain/auth";
 import LogoutButton from "@/components/Settings/LogoutButton";
 import SettingsForm from "@/components/Settings/SettingsForm";
 

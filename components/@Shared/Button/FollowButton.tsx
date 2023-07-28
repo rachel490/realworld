@@ -4,7 +4,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { profileApi } from "@/api/domain/profile";
+import { profileApi } from "@/axios/domain/profile";
 import { PAGE_LINKS } from "@/constants/links";
 import { useSession } from "next-auth/react";
 import ButtonSpinner from "../Spinner/ButtonSpinner";

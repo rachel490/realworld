@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "@/lib/nextAuth";
-import { commentsApi } from "@/api/domain/comment";
+import { commentsApi } from "@/axios/domain/comment";
 import Comment from "./Comment";
 
 interface IProps {

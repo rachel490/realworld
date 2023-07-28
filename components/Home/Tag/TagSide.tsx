@@ -1,4 +1,4 @@
-import { tagApi } from "@/api/domain/tag";
+import { tagApi } from "@/axios/domain/tag";
 import TagList from "./TagList";
 
 async function TagSide() {

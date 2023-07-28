@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ILoginBody, IRegisterBody } from "@/types";
-import { authApi } from "@/api/domain/auth";
+import { authApi } from "@/axios/domain/auth";
 import { setToken } from "@/app/action";
 import { handleError } from "@/utils/service";
 

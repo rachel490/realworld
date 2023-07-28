@@ -1,4 +1,4 @@
-import { authApi } from "@/api/domain/auth";
+import { authApi } from "@/axios/domain/auth";
 import { ILoginBody, IRegisterBody } from "@/types";
 import { handleError } from "./service";
 

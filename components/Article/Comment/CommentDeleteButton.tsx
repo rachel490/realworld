@@ -2,7 +2,7 @@
 
 "use client";
 
-import { commentsApi } from "@/api/domain/comment";
+import { commentsApi } from "@/axios/domain/comment";
 import ButtonSpinner from "@/components/@Shared/Spinner/ButtonSpinner";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";

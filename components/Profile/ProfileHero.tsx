@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
-import { profileApi } from "@/api/domain/profile";
+import { profileApi } from "@/axios/domain/profile";
 import { PAGE_LINKS } from "@/constants/links";
 import { nextAuthOptions } from "@/lib/nextAuth";
 import FollowButton from "../@Shared/Button/FollowButton";
