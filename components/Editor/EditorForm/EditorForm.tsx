@@ -3,12 +3,13 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { articleApi } from "@/api/domain/article";
 import { IArticle, IArticleBody, IArticleItemResponse } from "@/types";
 import { PAGE_LINKS } from "@/constants/links";
 import { handleError } from "@/utils/service";
+import ButtonSpinner from "@/components/@Shared/Spinner/ButtonSpinner";
 
 const articleInputs = [
   { name: "title", placeholder: "Article Title", type: "text", isRequired: true },
@@ -44,6 +45,7 @@ function EditorForm({ initialArticle }: IProps) {
   const [articleData, setArticleData] = useState<IArticleBody["article"]>(
     generateInitialValue(initialArticle?.article),
   );
+  const [isPending, startTransition] = useTransition();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -53,18 +55,20 @@ function EditorForm({ initialArticle }: IProps) {
     setArticleData(prev => ({ ...prev, [name]: e.target.value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const { article } = initialArticle
-        ? await articleApi.updateArticle(initialArticle.article.slug, { article: articleData })
-        : await articleApi.postArticle({ article: articleData });
-      router.refresh();
-      router.push(PAGE_LINKS.article(article.slug));
-    } catch (error) {
-      const currentError = handleError(error);
-      setErrorMessage(currentError);
-    }
+    startTransition(async () => {
+      try {
+        const { article } = initialArticle
+          ? await articleApi.updateArticle(initialArticle.article.slug, { article: articleData })
+          : await articleApi.postArticle({ article: articleData });
+        router.refresh();
+        router.push(PAGE_LINKS.article(article.slug));
+      } catch (error) {
+        const currentError = handleError(error);
+        setErrorMessage(currentError);
+      }
+    });
   };
 
   const handleCurrentTag = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,8 +138,12 @@ function EditorForm({ initialArticle }: IProps) {
               ))}
             </div>
           </fieldset>
-          <button className="btn btn-lg pull-xs-right btn-primary" type="submit">
-            Publish Article
+          <button
+            className="btn btn-lg pull-xs-right btn-primary"
+            type="submit"
+            disabled={isPending}
+          >
+            {isPending && <ButtonSpinner />}Publish Article
           </button>
         </fieldset>
       </form>

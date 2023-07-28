@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { ILoginBody } from "@/types";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { PAGE_LINKS } from "@/constants/links";
+import ButtonSpinner from "@/components/@Shared/Spinner/ButtonSpinner";
 
 export interface IInput {
   type: string;
@@ -34,6 +35,7 @@ function LoginForm() {
   const router = useRouter();
   const [loginData, setLoginData] = useState<ILoginBody["user"]>(initialValue);
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
+  const [isPending, startTransition] = useTransition();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
     const { value } = e.target;
@@ -41,21 +43,23 @@ function LoginForm() {
     setLoginData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const response = await signIn("nextauth-credential", {
-      email: loginData.email,
-      password: loginData.password,
-      redirect: false,
+    startTransition(async () => {
+      const response = await signIn("nextauth-credential", {
+        email: loginData.email,
+        password: loginData.password,
+        redirect: false,
+      });
+      if (response?.error) {
+        const errorObject = JSON.parse(response?.error) as string[];
+        setErrorMessage(errorObject);
+      } else {
+        router.refresh();
+        router.push(PAGE_LINKS.home);
+      }
     });
-    if (response?.error) {
-      const errorObject = JSON.parse(response?.error) as string[];
-      setErrorMessage(errorObject);
-    } else {
-      router.refresh();
-      router.push(PAGE_LINKS.home);
-    }
   };
 
   return (
@@ -78,7 +82,9 @@ function LoginForm() {
             />
           </fieldset>
         ))}
-        <button className="btn btn-lg btn-primary pull-xs-right">Sign in</button>
+        <button className="btn btn-lg btn-primary pull-xs-right" disabled={isPending}>
+          {isPending && <ButtonSpinner />}Sign in
+        </button>
       </form>
     </>
   );

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { IComment } from "@/types";
 import { parseDate } from "@/utils/date";
 import { PAGE_LINKS } from "@/constants/links";
-import CommentDeleteButton from "./CommentDeleteButton/CommentDeleteButton";
+import CommentDeleteButton from "./CommentDeleteButton";
 
 interface IProps {
   comment: IComment;

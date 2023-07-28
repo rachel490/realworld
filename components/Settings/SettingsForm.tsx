@@ -3,13 +3,14 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { IUser, IUserSettingsBody } from "@/types";
 import { authApi } from "@/api/domain/auth";
 import { PAGE_LINKS } from "@/constants/links";
 import { useSession } from "next-auth/react";
 import { IInput } from "../Auth/Login/LoginForm";
+import ButtonSpinner from "../@Shared/Spinner/ButtonSpinner";
 
 const settingsInputs: IInput[] = [
   {
@@ -46,6 +47,7 @@ interface IProps {
 function SettingsForm({ currentUser }: IProps) {
   const router = useRouter();
   const { data, update } = useSession();
+  const [isPending, startTransition] = useTransition();
 
   const [settingsData, setSettingsData] = useState<IUserSettingsBody["user"]>({
     image: currentUser.image,
@@ -68,12 +70,14 @@ function SettingsForm({ currentUser }: IProps) {
     setSettingsData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const updatedUser = await authApi.updateUser({ user: settingsData });
-    await updateSession(updatedUser);
-    router.refresh();
-    router.push(PAGE_LINKS.profilePosts(currentUser.username));
+    startTransition(async () => {
+      const updatedUser = await authApi.updateUser({ user: settingsData });
+      await updateSession(updatedUser);
+      router.refresh();
+      router.push(PAGE_LINKS.profilePosts(currentUser.username));
+    });
   };
 
   const updateSession = async (updatedUser: IUser) => {
@@ -112,8 +116,8 @@ function SettingsForm({ currentUser }: IProps) {
             )}
           </fieldset>
         ))}
-        <button type="submit" className="btn btn-lg btn-primary pull-xs-right">
-          Update Settings
+        <button type="submit" className="btn btn-lg btn-primary pull-xs-right" disabled={isPending}>
+          {isPending && <ButtonSpinner />}Update Settings
         </button>
       </fieldset>
     </form>

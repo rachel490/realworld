@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
 "use client";
 
 import { useRouter } from "next/navigation";
 import { articleApi } from "@/api/domain/article";
 import { PAGE_LINKS } from "@/constants/links";
+import { useTransition } from "react";
+import ButtonSpinner from "../@Shared/Spinner/ButtonSpinner";
 
 interface IProps {
   slug: string;
@@ -12,15 +12,22 @@ interface IProps {
 
 function ArticleDeleteButton({ slug }: IProps) {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
-  const handleArticleDelete = async () => {
-    await articleApi.deleteArticle(slug);
-    router.push(PAGE_LINKS.home);
+  const handleArticleDelete = () => {
+    startTransition(async () => {
+      await articleApi.deleteArticle(slug);
+      router.push(PAGE_LINKS.home);
+    });
   };
 
   return (
-    <button className="btn btn-outline-danger btn-sm" onClick={handleArticleDelete}>
-      <i className="ion-trash-a" /> Delete Article
+    <button
+      className="btn btn-outline-danger btn-sm"
+      onClick={handleArticleDelete}
+      disabled={isPending}
+    >
+      {isPending ? <ButtonSpinner /> : <i className="ion-trash-a" />} Delete Article
     </button>
   );
 }

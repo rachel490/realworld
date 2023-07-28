@@ -3,11 +3,12 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { articleApi } from "@/api/domain/article";
 import { PAGE_LINKS } from "@/constants/links";
 import { useSession } from "next-auth/react";
+import ButtonSpinner from "../Spinner/ButtonSpinner";
 
 interface IProps {
   favoritesCount: number;
@@ -21,24 +22,27 @@ function LikeButton({ favoritesCount, isFavorited, slug, type = "long" }: IProps
   const router = useRouter();
   const [favorited, setFavorited] = useState(isFavorited);
   const [favoriteCount, setFavoriteCount] = useState(favoritesCount);
+  const [isPending, startTransition] = useTransition();
 
-  const handleClick = async () => {
+  const handleClick = () => {
     if (!session || session.status === "unauthenticated") {
       router.push(PAGE_LINKS.register);
       return;
     }
 
-    if (favorited) {
-      const { article } = await articleApi.unlikeArticle(slug);
-      setFavorited(article.favorited);
-      setFavoriteCount(article.favoritesCount);
-      router.refresh();
-    } else {
-      const { article } = await articleApi.likeArticle(slug);
-      setFavorited(article.favorited);
-      setFavoriteCount(article.favoritesCount);
-      router.refresh();
-    }
+    startTransition(async () => {
+      if (favorited) {
+        const { article } = await articleApi.unlikeArticle(slug);
+        setFavorited(article.favorited);
+        setFavoriteCount(article.favoritesCount);
+        router.refresh();
+      } else {
+        const { article } = await articleApi.likeArticle(slug);
+        setFavorited(article.favorited);
+        setFavoriteCount(article.favoritesCount);
+        router.refresh();
+      }
+    });
   };
 
   return (
@@ -47,8 +51,9 @@ function LikeButton({ favoritesCount, isFavorited, slug, type = "long" }: IProps
       className={`btn btn-sm
         ${favorited ? "btn-primary" : "btn-outline-primary"} 
         ${type === "short" ? "pull-xs-right" : ""}`}
+      disabled={isPending}
     >
-      <i className="ion-heart" />
+      {isPending ? <ButtonSpinner /> : <i className="ion-heart" />}
       {type === "short" ? (
         favoriteCount
       ) : (
