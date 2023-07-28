@@ -26,7 +26,6 @@ async function ArticlePage({ params }: IProps) {
       <div className="banner">
         <div className="container">
           <h1>{title}</h1>
-          <ArticleMeta article={article} />
         </div>
       </div>
 
